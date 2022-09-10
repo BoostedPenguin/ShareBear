@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareBear", "ShareBear\ShareBear.csproj", "{D355BA8B-56C2-471A-9DB3-19E1726E0FAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShareBear", "ShareBear\ShareBear.csproj", "{D355BA8B-56C2-471A-9DB3-19E1726E0FAF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareBear.Data", "ShareBear.Data\ShareBear.Data.csproj", "{D95F4488-DC59-4C58-A445-240DA7CCE89F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareBear.NpgsqlMigrations", "ShareBear.NpgsqlMigrations\ShareBear.NpgsqlMigrations.csproj", "{28B39440-8B39-453B-9F65-A726216E2B53}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{D355BA8B-56C2-471A-9DB3-19E1726E0FAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D355BA8B-56C2-471A-9DB3-19E1726E0FAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D355BA8B-56C2-471A-9DB3-19E1726E0FAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D95F4488-DC59-4C58-A445-240DA7CCE89F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D95F4488-DC59-4C58-A445-240DA7CCE89F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D95F4488-DC59-4C58-A445-240DA7CCE89F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D95F4488-DC59-4C58-A445-240DA7CCE89F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28B39440-8B39-453B-9F65-A726216E2B53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28B39440-8B39-453B-9F65-A726216E2B53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28B39440-8B39-453B-9F65-A726216E2B53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28B39440-8B39-453B-9F65-A726216E2B53}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
