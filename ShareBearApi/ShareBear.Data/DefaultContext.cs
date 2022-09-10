@@ -2,9 +2,9 @@
 
 namespace ShareBear.Data
 {
-    public class AppContext : DbContext
+    public class DefaultContext : DbContext
     {
-        public AppContext(DbContextOptions<AppContext> options) : base(options)
+        public DefaultContext(DbContextOptions<DefaultContext> options) : base(options)
         {
 
         }
