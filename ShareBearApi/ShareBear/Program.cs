@@ -17,6 +17,8 @@ builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSet
 // HTTP Context DI accessor
 builder.Services.AddHttpContextAccessor();
 
+// HTTP Client DI
+builder.Services.AddHttpClient();
 
 // Automapper config
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
