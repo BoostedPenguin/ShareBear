@@ -26,7 +26,6 @@
 
   <ItemGroup>
     <Folder Include="Dtos\" />
-    <Folder Include="Services\" />
     <Folder Include="Profiles\" />
   </ItemGroup>
 
