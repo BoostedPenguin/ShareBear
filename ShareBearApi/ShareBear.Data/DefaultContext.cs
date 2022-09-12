@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShareBear.Data.Models;
 
 namespace ShareBear.Data
 {
@@ -12,6 +13,9 @@ namespace ShareBear.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
         }
+
+        public virtual DbSet<RefreshTokens> RefreshTokens { get; set; }
+        public virtual DbSet<Users> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

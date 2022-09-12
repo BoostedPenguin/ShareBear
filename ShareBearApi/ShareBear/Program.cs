@@ -1,9 +1,9 @@
-using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ShareBear.Data;
 using ShareBear.Helpers;
+using ShareBear.Services;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -103,7 +103,7 @@ builder.Services.AddAuthentication(options =>
 
 // Add services here
 
-
+builder.Services.AddSingleton<IAccountService, AccountService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -124,4 +124,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+await PrepDb.PrepMigration(app);
+
 app.Run();
+
