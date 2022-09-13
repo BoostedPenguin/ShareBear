@@ -104,6 +104,7 @@ builder.Services.AddAuthentication(options =>
 // Add services here
 
 builder.Services.AddSingleton<IAccountService, AccountService>();
+builder.Services.AddSingleton<IFileService, FileService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
