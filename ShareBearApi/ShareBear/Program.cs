@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using ShareBear.BackgroundServices;
 using ShareBear.Data;
 using ShareBear.Helpers;
 using ShareBear.Services;
@@ -105,6 +106,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddSingleton<IAccountService, AccountService>();
 builder.Services.AddSingleton<IFileService, FileService>();
+builder.Services.AddHostedService<ContainerDeletionService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
