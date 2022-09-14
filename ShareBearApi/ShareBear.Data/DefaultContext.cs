@@ -14,6 +14,9 @@ namespace ShareBear.Data
         {
         }
 
+        public virtual DbSet<ContainerHubs> ContainerHubs { get; set; }
+        public virtual DbSet<ContainerHubAccessLogs> ContainerHubAccessLogs { get; set; }
+        public virtual DbSet<ContainerFiles> ContainerFiles { get; set; }
         public virtual DbSet<RefreshTokens> RefreshTokens { get; set; }
         public virtual DbSet<Users> Users { get; set; }
 
