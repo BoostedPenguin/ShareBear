@@ -12,11 +12,13 @@ namespace ShareBear.Data.Models
         public ContainerHubs()
         {
             ContainerFiles = new HashSet<ContainerFiles>();
+            ContainerHubAccessLogs = new HashSet<ContainerHubAccessLogs>();
         }
 
         public ContainerHubs(string createdByVisitorId, bool isProduction)
         {
             ContainerFiles = new HashSet<ContainerFiles>();
+            ContainerHubAccessLogs = new HashSet<ContainerHubAccessLogs>();
 
             CreatedByVisitorId = createdByVisitorId;
 
@@ -39,6 +41,7 @@ namespace ShareBear.Data.Models
         public DateTime ExpiresAt { get; set; }
         public DateTime CreatedAt { get; set; }
         public virtual ICollection<ContainerFiles> ContainerFiles { get; set; }
+        public virtual ICollection<ContainerHubAccessLogs> ContainerHubAccessLogs { get; set; }
 
         [NotMapped]
         public bool IsActive => DateTime.UtcNow >= ExpiresAt;
