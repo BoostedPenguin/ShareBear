@@ -27,6 +27,6 @@ namespace ShareBear.Data.Models
         // In bytes
         public long FileSize { get; set; }
 
-        public virtual ContainerHubs? ContainerHub { get; set; }
+        public virtual ContainerHubs ContainerHub { get; set; }
     }
 }

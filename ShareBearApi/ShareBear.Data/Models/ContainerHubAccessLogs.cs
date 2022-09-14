@@ -32,6 +32,6 @@ namespace ShareBear.Data.Models
         public DateTime AccessedOn { get; set; }
         public ContainerUserActions Action { get; set; }
 
-        public virtual ContainerHubs? ContainerHub { get; set; }
+        public virtual ContainerHubs ContainerHub { get; set; }
     }
 }
