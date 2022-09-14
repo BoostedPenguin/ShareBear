@@ -14,16 +14,22 @@ namespace ShareBear.Data.Models
 
         }
 
-        public ContainerFiles(IFormFile formFile)
+        public ContainerFiles(IFormFile formFile, bool isProduction)
         {
             FileName = formFile.FileName;
             FileType = Path.GetExtension(formFile.FileName);
             FileSize = formFile.Length;
+
+            ContainerFileName = $"{FileName}-{FileType}-{Guid.NewGuid()}-{(isProduction ? "production" : "development")}";
         }
 
         public int Id { get; set; }
+        public string ContainerFileName { get; set; }
         public string FileName { get; set; } = string.Empty;
+
+        // Extension
         public string FileType { get; set; } = string.Empty;
+        
         // In bytes
         public long FileSize { get; set; }
 

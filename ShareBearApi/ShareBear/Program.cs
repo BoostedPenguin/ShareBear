@@ -106,7 +106,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddSingleton<IAccountService, AccountService>();
 builder.Services.AddSingleton<IFileService, FileService>();
-builder.Services.AddHostedService<ContainerDeletionService>();
+//builder.Services.AddHostedService<ContainerDeletionService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

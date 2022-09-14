@@ -7,6 +7,7 @@ namespace ShareBear.Services
 {
     public interface IFileService
     {
+        Task UploadFile(string containerName, string fileName, IFormFile file);
     }
 
     public class InvalidFileTypeException : Exception
@@ -22,11 +23,13 @@ namespace ShareBear.Services
         private readonly BlobServiceClient _blobServiceClient;
         private readonly IOptions<AppSettings> appSettings;
         private readonly IWebHostEnvironment env;
+        private readonly ILogger<FileService> logger;
 
-        public FileService(IOptions<AppSettings> appSettings, IWebHostEnvironment env)
+        public FileService(IOptions<AppSettings> appSettings, IWebHostEnvironment env, ILogger<FileService> logger)
         {
             this.appSettings = appSettings;
             this.env = env;
+            this.logger = logger;
             var connectionString = appSettings.Value.AzureStorageConnectionString;
 
             this._blobServiceClient = new BlobServiceClient(connectionString);
@@ -59,7 +62,42 @@ namespace ShareBear.Services
                 return false;
         }
 
+        public async Task GetFile(string containerName, string fileName)
+        {
+            try
+            {
+                //var blobContainerResponse = _blobServiceClient.GetBlobContainersAsync(containerName);
 
+                //blobContainerResponse.
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        public async Task UploadFile(string containerName, string fileName, IFormFile file)
+        {
+            try
+            {
+                var blobContainerResponse = await _blobServiceClient.CreateBlobContainerAsync(containerName);
+
+                var blobContainer = blobContainerResponse.Value;
+
+                var blob = blobContainer.GetBlobClient(fileName);
+
+                using var fileData = file.OpenReadStream();
+
+                var result = await blob.UploadAsync(fileData);
+
+                //blob.Uri
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+            }
+        }
 
 
         public async Task TestingMethod()
@@ -70,12 +108,6 @@ namespace ShareBear.Services
             var blobClient = containerClient.GetBlobClient("TestingName" + Guid.NewGuid().ToString() + ".txt");
 
             Console.WriteLine(blobClient.Uri);
-
-        }
-
-
-        public void UploadDocument()
-        {
 
         }
     }

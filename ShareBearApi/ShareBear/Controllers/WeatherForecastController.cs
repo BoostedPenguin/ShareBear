@@ -1,4 +1,6 @@
-﻿using Azure.Storage.Blobs;
+﻿using Azure.Storage;
+using Azure.Storage.Blobs;
+using Azure.Storage.Sas;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ShareBear.Helpers;
@@ -65,14 +67,61 @@ namespace ShareBear.Controllers
                 using var fileData = file.OpenReadStream();
 
                 var result = await blob.UploadAsync(fileData);
-                
-                return Ok(result);
+
+
+
+                StorageSharedKeyCredential storageSharedKeyCredential = 
+                    new StorageSharedKeyCredential(blobServiceClient.AccountName, "Rcu02guHpbxznBvKSWWVnPwYC7gPFMrvjJciMtGEGrqbdEKViQuuAY/hetHhm3IPrBN138PGQZj/+AStSn1fDQ==");
+
+           
+                //  Defines the resource being accessed and for how long the access is allowed.
+                var blobSasBuilder = new BlobSasBuilder
+                {
+                    StartsOn = DateTime.UtcNow.Subtract(TimeSpan.FromMinutes(15d)),
+                    ExpiresOn = DateTime.UtcNow.AddDays(15),
+                    BlobContainerName = "testingcontainer",
+                    BlobName = "test.png",
+                };
+
+                //  Defines the type of permission.
+                blobSasBuilder.SetPermissions(BlobSasPermissions.Write | BlobSasPermissions.Read | BlobSasPermissions.List);
+
+
+                //  Builds the Sas URI.
+                BlobSasQueryParameters sasQueryParameters = blobSasBuilder.ToSasQueryParameters(storageSharedKeyCredential);
+                UriBuilder sasUri = new UriBuilder(blob.Uri);
+                sasUri.Query = sasQueryParameters.ToString();
+
+                return Ok(sasUri);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
                 return Ok();
             }
+        }
+
+        /// <summary>
+        /// Returns a URI containing a SAS for the blob container.
+        /// </summary>
+        /// <param name="container">A reference to the container.</param>
+        /// <param name="StorageSharedKeyCredential">Storage Shared Key Credential.</param>
+        /// <returns>A string containing the URI for the container, with the SAS token appended.</returns>
+        static UriBuilder GetContainerSasUri(BlobContainerClient container, StorageSharedKeyCredential storageSharedKeyCredential)
+        {
+            var policy = new BlobSasBuilder
+            {
+                BlobContainerName = container.Name,
+                Resource = "c",
+                StartsOn = DateTimeOffset.UtcNow,
+                ExpiresOn = DateTimeOffset.UtcNow.AddHours(1),
+            };
+            policy.SetPermissions(BlobSasPermissions.All);
+            var sas = policy.ToSasQueryParameters(storageSharedKeyCredential).ToString();
+            UriBuilder sasUri = new UriBuilder(container.Uri);
+            sasUri.Query = sas;
+            //Return the URI string for the container, including the SAS token.
+            return sasUri;
         }
     }
 }

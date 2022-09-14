@@ -1,13 +1,5 @@
 ﻿namespace ShareBear.BackgroundServices
 {
-    public class TimerWrapper: Timer
-    {
-        public TimerWrapper()
-        {
-
-        }
-    }
-
     public class ContainerDeletionService : BackgroundService
     {
         private Timer timer;
