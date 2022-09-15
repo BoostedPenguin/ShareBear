@@ -71,16 +71,19 @@ namespace ShareBear.Controllers
 
 
                 StorageSharedKeyCredential storageSharedKeyCredential = 
-                    new StorageSharedKeyCredential(blobServiceClient.AccountName, "Rcu02guHpbxznBvKSWWVnPwYC7gPFMrvjJciMtGEGrqbdEKViQuuAY/hetHhm3IPrBN138PGQZj/+AStSn1fDQ==");
+                    new StorageSharedKeyCredential(blobServiceClient.AccountName, appSettings.Value.AzureStorageAccessKey);
 
            
                 //  Defines the resource being accessed and for how long the access is allowed.
                 var blobSasBuilder = new BlobSasBuilder
                 {
-                    StartsOn = DateTime.UtcNow.Subtract(TimeSpan.FromMinutes(15d)),
+                    //StartsOn = DateTime.UtcNow.Subtract(TimeSpan.FromMinutes(15d)),
                     ExpiresOn = DateTime.UtcNow.AddDays(15),
                     BlobContainerName = "testingcontainer",
-                    BlobName = "test.png",
+
+
+                    // If you omit this, it's going to create an sas for every container item
+                    //BlobName = "test.png",
                 };
 
                 //  Defines the type of permission.
@@ -92,6 +95,7 @@ namespace ShareBear.Controllers
                 UriBuilder sasUri = new UriBuilder(blob.Uri);
                 sasUri.Query = sasQueryParameters.ToString();
 
+                var g = containerClient.Uri;
                 return Ok(sasUri);
             }
             catch (Exception ex)

@@ -1,4 +1,6 @@
-﻿using Azure.Storage.Blobs;
+﻿using Azure.Storage;
+using Azure.Storage.Blobs;
+using Azure.Storage.Sas;
 using Microsoft.Extensions.Options;
 using Myrmec;
 using ShareBear.Helpers;
@@ -62,18 +64,73 @@ namespace ShareBear.Services
                 return false;
         }
 
-        public async Task GetFile(string containerName, string fileName)
+        public class ContainerSASItems
+        {
+            public ContainerSASItems(string containerName, string baseUri)
+            {
+                ContainerName = containerName;
+                BaseUri = baseUri;
+            }
+            public string ContainerName { get; set; }
+            public string BaseUri { get; set; }
+            public List<string> ContainerItemsUris { get; set; } = new List<string>();
+        }
+
+        public async Task<ContainerSASItems?> GetSignedContainerDownloadLinks(string containerName)
         {
             try
             {
-                //var blobContainerResponse = _blobServiceClient.GetBlobContainersAsync(containerName);
 
-                //blobContainerResponse.
+                var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
 
+                if (!await containerClient.ExistsAsync())
+                    throw new FileNotFoundException("The given container does not exist.");
+
+                var containerBlobs = containerClient.GetBlobs();
+                var baseUri = containerClient.Uri;
+
+                //if (containerBlobs.Count == 0)
+                //    return new ContainerSASItems(containerName, baseUri.ToString());
+
+
+                var storageSharedKeyCredential =
+                    new StorageSharedKeyCredential(_blobServiceClient.AccountName, appSettings.Value.AzureStorageAccessKey);
+
+                //  Defines the resource being accessed and for how long the access is allowed.
+                var blobSasBuilder = new BlobSasBuilder
+                {
+                    //StartsOn = DateTime.UtcNow.Subtract(TimeSpan.FromMinutes(15d)),
+                    ExpiresOn = DateTime.UtcNow.AddDays(15),
+                    BlobContainerName = "testingcontainer",
+                    
+                    // If you omit this, it's going to create an sas for every container item
+                    //BlobName = "test.png",
+                };
+
+                blobSasBuilder.SetPermissions(BlobSasPermissions.Read | BlobSasPermissions.List);
+
+                var sasQueryParameters = blobSasBuilder.ToSasQueryParameters(storageSharedKeyCredential);
+
+
+
+                var result = new ContainerSASItems(containerName, baseUri.ToString());
+
+
+                UriBuilder sasUri = new UriBuilder(baseUri);
+                sasUri.Query = sasQueryParameters.ToString();
+                
+                foreach (var item in containerBlobs)
+                {
+                    sasUri.Path = baseUri.ToString() + "/" + item.Name;
+                    result.ContainerItemsUris.Add(sasUri.ToString());
+                }
+
+                return result;
             }
             catch (Exception ex)
             {
-
+                logger.LogError(ex.Message);
+                return null;
             }
         }
 
