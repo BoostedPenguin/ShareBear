@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using ShareBear.Data;
 using ShareBear.Data.Models;
+using ShareBear.Dtos;
 
 namespace ShareBear.Services
 {
@@ -21,16 +23,24 @@ namespace ShareBear.Services
     {
         // In MB
         const int MaxStorageSize = 1000;
+        const int MaxActiveContainersPerVisitor = 3;
         private readonly IDbContextFactory<DefaultContext> contextFactory;
         private readonly IAzureStorageService azureStorageService;
         private readonly ILogger<FileAccessService> logger;
+        private readonly IMapper mapper;
         private readonly IWebHostEnvironment env;
 
-        public FileAccessService(IDbContextFactory<DefaultContext> contextFactory, IAzureStorageService azureStorageService, ILogger<FileAccessService> logger, IWebHostEnvironment env)
+        public FileAccessService(
+            IDbContextFactory<DefaultContext> contextFactory, 
+            IAzureStorageService azureStorageService, 
+            ILogger<FileAccessService> logger, 
+            IMapper mapper,
+            IWebHostEnvironment env)
         {
             this.contextFactory = contextFactory;
             this.azureStorageService = azureStorageService;
             this.logger = logger;
+            this.mapper = mapper;
             this.env = env;
         }
 
@@ -53,7 +63,7 @@ namespace ShareBear.Services
             var visitorActiveContainerCount =
                 await db.ContainerHubs.Where(e => e.IsActive && e.CreatedByVisitorId == visitorId).CountAsync();
 
-            if (visitorActiveContainerCount > 3)
+            if (visitorActiveContainerCount > MaxActiveContainersPerVisitor)
                 throw new ArgumentException("The max containers per visitor is 3. You have reached that limit. Delete older containers.");
 
             var visitorContainer = new ContainerHubs(visitorId, env.IsProduction());
@@ -74,6 +84,30 @@ namespace ShareBear.Services
             containerFiles.ForEach(e => visitorContainer.ContainerFiles.Add(e));
             await db.AddAsync(visitorContainer);
             await db.SaveChangesAsync();
+        }
+
+
+        public async Task<ContainerHubsDto> GetContainerFiles(string visitorId, string shortRequestCode)
+        {
+            using var db = contextFactory.CreateDbContext();
+
+            var container = 
+                await db.ContainerHubs
+                .Include(e => e.ContainerFiles)
+                .FirstOrDefaultAsync(e => e.ShortCodeString == shortRequestCode);
+
+            if (container == null)
+                throw new DirectoryNotFoundException("This container does not exist.");
+
+            if (container.ExpiresAt <= DateTime.UtcNow)
+                throw new ArgumentException("This container has expired");
+
+
+            var result = mapper.Map<ContainerHubsDto>(container);
+
+            result.ContainerFilesLinks = await azureStorageService.GetSignedContainerDownloadLinks(container.ContainerName);
+
+            return result;
         }
     }
 }
