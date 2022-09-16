@@ -20,7 +20,7 @@ namespace ShareBear.Data.Models
             FileType = Path.GetExtension(formFile.FileName);
             FileSize = formFile.Length;
 
-            ContainerFileName = $"{FileName}-{FileType}-{Guid.NewGuid()}-{(isProduction ? "production" : "development")}";
+            ContainerFileName = $"{FileName}-{FileType}-{Guid.NewGuid()}-{(isProduction ? "prod" : "dev")}";
         }
 
         public int Id { get; set; }
