@@ -15,7 +15,7 @@ namespace ShareBear.Services
         Task DeleteContainer(string containerName);
         Task DeleteFile(string containerName, string fileName);
         Task<ContainerSASItems?> GetSignedContainerDownloadLinks(string containerName);
-        Task GetTotalSizeContainers();
+        Task<ByteSize?> GetTotalSizeContainers();
         Task UploadFile(string containerName, string fileName, IFormFile file);
         Task UploadFiles(string containerName, List<FormFileFileNames> files);
     }

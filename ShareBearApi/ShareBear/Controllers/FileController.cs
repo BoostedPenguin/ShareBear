@@ -6,10 +6,12 @@ namespace ShareBear.Controllers
     public class FileController : ControllerBase
     {
         private readonly IAzureStorageService fileService;
+        private readonly IFileAccessService fileAccessService;
 
-        public FileController(IAzureStorageService fileService)
+        public FileController(IAzureStorageService fileService, IFileAccessService fileAccessService)
         {
             this.fileService = fileService;
+            this.fileAccessService = fileAccessService;
         }
 
         [Route("uploadFile")]
@@ -18,7 +20,7 @@ namespace ShareBear.Controllers
         {
             try
             {
-                await fileService.GetTotalSizeContainers();
+                await fileAccessService.GenerateContainer("demovisitorid", files);
 
                 return Ok("Success");
             }

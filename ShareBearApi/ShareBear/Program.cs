@@ -106,6 +106,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddSingleton<IAccountService, AccountService>();
 builder.Services.AddSingleton<ScheduledFileDeletion>();
 builder.Services.AddSingleton<IAzureStorageService, AzureStorageService>();
+builder.Services.AddSingleton<IFileAccessService, FileAccessService>();
 //builder.Services.AddHostedService<ContainerDeletionService>();
 
 builder.Services.AddControllers();
