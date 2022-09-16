@@ -9,7 +9,23 @@ namespace ShareBear.Services
 {
     public interface IFileService
     {
+        Task DeleteContainer(string containerName);
+        Task DeleteFile(string containerName, string fileName);
+        Task<ContainerSASItems?> GetSignedContainerDownloadLinks(string containerName);
         Task UploadFile(string containerName, string fileName, IFormFile file);
+        Task UploadFiles(string containerName, List<FormFileFileNames> files);
+    }
+
+    public class ContainerSASItems
+    {
+        public ContainerSASItems(string containerName, string baseUri)
+        {
+            ContainerName = containerName;
+            BaseUri = baseUri;
+        }
+        public string ContainerName { get; set; }
+        public string BaseUri { get; set; }
+        public List<string> ContainerItemsUris { get; set; } = new List<string>();
     }
 
     public struct FormFileFileNames
@@ -70,17 +86,7 @@ namespace ShareBear.Services
                 return false;
         }
 
-        public class ContainerSASItems
-        {
-            public ContainerSASItems(string containerName, string baseUri)
-            {
-                ContainerName = containerName;
-                BaseUri = baseUri;
-            }
-            public string ContainerName { get; set; }
-            public string BaseUri { get; set; }
-            public List<string> ContainerItemsUris { get; set; } = new List<string>();
-        }
+
 
         public async Task DeleteContainer(string containerName)
         {

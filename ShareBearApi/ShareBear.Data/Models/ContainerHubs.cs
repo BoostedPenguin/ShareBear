@@ -28,10 +28,10 @@ namespace ShareBear.Data.Models
             FullCodeString = Guid.NewGuid().ToString("N");
 
             // Visitor ID + Random string + Environment
-            ContainerName = $"{createdByVisitorId}-{Guid.NewGuid()}-{(isProduction ? "production" : "development")}";
+            ContainerName = $"{createdByVisitorId.ToLower()}-{Guid.NewGuid()}-{(isProduction ? "production" : "development")}";
 
             CreatedAt = DateTime.UtcNow;
-            ExpiresAt = DateTime.UtcNow.AddSeconds(20);
+            ExpiresAt = DateTime.UtcNow.AddDays(3);
 
             IsActive = true;
         }

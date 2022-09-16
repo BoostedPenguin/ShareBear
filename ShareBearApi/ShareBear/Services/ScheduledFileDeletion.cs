@@ -11,11 +11,13 @@ namespace ShareBear.Services
         private System.Timers.Timer? timer = null;
         private readonly IDbContextFactory<DefaultContext> contextFactory;
         private readonly ILogger<ScheduledFileDeletion> logger;
+        private readonly IFileService fileService;
 
-        public ScheduledFileDeletion(IDbContextFactory<DefaultContext> contextFactory, ILogger<ScheduledFileDeletion> logger)
+        public ScheduledFileDeletion(IDbContextFactory<DefaultContext> contextFactory, ILogger<ScheduledFileDeletion> logger, IFileService fileService)
         {
             this.contextFactory = contextFactory;
             this.logger = logger;
+            this.fileService = fileService;
         }
 
         public void InitScheduledDeletion()
@@ -57,6 +59,9 @@ namespace ShareBear.Services
                 }
 
                 newlyExpiredContainers.ForEach(e => e.IsActive = false);
+
+                var expiredContainerTasks = newlyExpiredContainers.Select(e => fileService.DeleteContainer(e.ContainerName)).ToList();
+                await Task.WhenAll(expiredContainerTasks);
 
 
                 await db.SaveChangesAsync();

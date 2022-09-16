@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using ShareBear.BackgroundServices;
 using ShareBear.Data;
 using ShareBear.Helpers;
 using ShareBear.Services;
