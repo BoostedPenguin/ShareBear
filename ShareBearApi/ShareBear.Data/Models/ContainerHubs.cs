@@ -31,7 +31,9 @@ namespace ShareBear.Data.Models
             ContainerName = $"{createdByVisitorId}-{Guid.NewGuid()}-{(isProduction ? "production" : "development")}";
 
             CreatedAt = DateTime.UtcNow;
-            ExpiresAt = DateTime.UtcNow.AddDays(3);
+            ExpiresAt = DateTime.UtcNow.AddSeconds(20);
+
+            IsActive = true;
         }
         public int Id { get; set; }
         public string ShortCodeString { get; set; } = string.Empty;
@@ -43,7 +45,8 @@ namespace ShareBear.Data.Models
         public virtual ICollection<ContainerFiles> ContainerFiles { get; set; }
         public virtual ICollection<ContainerHubAccessLogs> ContainerHubAccessLogs { get; set; }
 
-        [NotMapped]
-        public bool IsActive => DateTime.UtcNow >= ExpiresAt;
+
+        // If already deleted / access forbiden
+        public bool IsActive { get; set; }
     }
 }

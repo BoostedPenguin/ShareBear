@@ -12,6 +12,12 @@ namespace ShareBear.Services
         Task UploadFile(string containerName, string fileName, IFormFile file);
     }
 
+    public struct FormFileFileNames
+    {
+        public string FileName { get; set; }
+        public IFormFile File { get; set; }
+    }
+
     public class InvalidFileTypeException : Exception
     {
         public InvalidFileTypeException(string message) : base(message)
@@ -76,6 +82,37 @@ namespace ShareBear.Services
             public List<string> ContainerItemsUris { get; set; } = new List<string>();
         }
 
+        public async Task DeleteContainer(string containerName)
+        {
+            try
+            {
+                var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+                await containerClient.DeleteIfExistsAsync();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+            }
+        }
+
+        public async Task DeleteFile(string containerName, string fileName)
+        {
+            try
+            {
+                var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+                if (!await containerClient.ExistsAsync())
+                    throw new FileNotFoundException("The given container does not exist.");
+
+                await containerClient.DeleteBlobIfExistsAsync(fileName);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+            }
+        }
+
         public async Task<ContainerSASItems?> GetSignedContainerDownloadLinks(string containerName)
         {
             try
@@ -88,9 +125,6 @@ namespace ShareBear.Services
 
                 var containerBlobs = containerClient.GetBlobs();
                 var baseUri = containerClient.Uri;
-
-                //if (containerBlobs.Count == 0)
-                //    return new ContainerSASItems(containerName, baseUri.ToString());
 
 
                 var storageSharedKeyCredential =
@@ -116,9 +150,11 @@ namespace ShareBear.Services
                 var result = new ContainerSASItems(containerName, baseUri.ToString());
 
 
-                UriBuilder sasUri = new UriBuilder(baseUri);
-                sasUri.Query = sasQueryParameters.ToString();
-                
+                var sasUri = new UriBuilder(baseUri)
+                {
+                    Query = sasQueryParameters.ToString()
+                };
+
                 foreach (var item in containerBlobs)
                 {
                     sasUri.Path = baseUri.ToString() + "/" + item.Name;
@@ -132,6 +168,14 @@ namespace ShareBear.Services
                 logger.LogError(ex.Message);
                 return null;
             }
+        }
+
+
+        public async Task UploadFiles(string containerName, List<FormFileFileNames> files)
+        {
+            var tasks = files.Select(e => UploadFile(containerName, e.FileName, e.File));
+
+            await Task.WhenAll(tasks);
         }
 
         public async Task UploadFile(string containerName, string fileName, IFormFile file)
@@ -154,18 +198,6 @@ namespace ShareBear.Services
             {
                 logger.LogError(ex.Message);
             }
-        }
-
-
-        public async Task TestingMethod()
-        {
-            BlobContainerClient containerClient = 
-                await _blobServiceClient.CreateBlobContainerAsync("TestingContainer" + Guid.NewGuid().ToString());
-            
-            var blobClient = containerClient.GetBlobClient("TestingName" + Guid.NewGuid().ToString() + ".txt");
-
-            Console.WriteLine(blobClient.Uri);
-
         }
     }
 }

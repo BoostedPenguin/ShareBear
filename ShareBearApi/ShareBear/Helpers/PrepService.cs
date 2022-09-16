@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShareBear.Data;
 using ShareBear.Data.Models;
+using ShareBear.Services;
 
 namespace ShareBear.Helpers
 {
-    public static class PrepDb
+    public static class PrepService
     {
         public static async Task PrepMigration(IApplicationBuilder app)
         {
@@ -12,6 +13,7 @@ namespace ShareBear.Helpers
 
             var contextFactory = 
                 serviceScope.ServiceProvider.GetService<IDbContextFactory<DefaultContext>>();
+
 
             if (contextFactory == null)
                 throw new Exception("Unable to construct context factory!");
@@ -26,6 +28,14 @@ namespace ShareBear.Helpers
 
 
             await SeedDatabase(context);
+
+
+            var scheduledFileDeletion =
+                serviceScope.ServiceProvider.GetService<ScheduledFileDeletion>();
+            if (scheduledFileDeletion == null)
+                throw new Exception("Scheduled file deletion service is not working. Critical error.");
+
+            scheduledFileDeletion.InitScheduledDeletion();
         }
 
         private static async Task SeedDatabase(DefaultContext defaultContext)
@@ -48,6 +58,9 @@ namespace ShareBear.Helpers
                     CreatedAt = DateTime.Now,
                 };
 
+                var testContainer = new ContainerHubs("visitorId", false);
+
+                await defaultContext.AddAsync(testContainer);
 
                 await defaultContext.AddAsync(user);
                 await defaultContext.SaveChangesAsync();

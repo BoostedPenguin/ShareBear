@@ -105,6 +105,7 @@ builder.Services.AddAuthentication(options =>
 // Add services here
 
 builder.Services.AddSingleton<IAccountService, AccountService>();
+builder.Services.AddSingleton<ScheduledFileDeletion>();
 builder.Services.AddSingleton<IFileService, FileService>();
 //builder.Services.AddHostedService<ContainerDeletionService>();
 
@@ -127,7 +128,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-await PrepDb.PrepMigration(app);
+await PrepService.PrepMigration(app);
 
 app.Run();
 
