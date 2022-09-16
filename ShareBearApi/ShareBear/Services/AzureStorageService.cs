@@ -1,17 +1,21 @@
 ﻿using Azure.Storage;
 using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using Azure.Storage.Sas;
+using ByteSizeLib;
 using Microsoft.Extensions.Options;
 using Myrmec;
 using ShareBear.Helpers;
 
 namespace ShareBear.Services
 {
-    public interface IFileService
+    public interface IAzureStorageService
     {
+        Task CreateContainer(string containerName);
         Task DeleteContainer(string containerName);
         Task DeleteFile(string containerName, string fileName);
         Task<ContainerSASItems?> GetSignedContainerDownloadLinks(string containerName);
+        Task GetTotalSizeContainers();
         Task UploadFile(string containerName, string fileName, IFormFile file);
         Task UploadFiles(string containerName, List<FormFileFileNames> files);
     }
@@ -42,14 +46,14 @@ namespace ShareBear.Services
         }
     }
 
-    public class FileService : IFileService
+    public class AzureStorageService : IAzureStorageService
     {
         private readonly BlobServiceClient _blobServiceClient;
         private readonly IOptions<AppSettings> appSettings;
         private readonly IWebHostEnvironment env;
-        private readonly ILogger<FileService> logger;
+        private readonly ILogger<AzureStorageService> logger;
 
-        public FileService(IOptions<AppSettings> appSettings, IWebHostEnvironment env, ILogger<FileService> logger)
+        public AzureStorageService(IOptions<AppSettings> appSettings, IWebHostEnvironment env, ILogger<AzureStorageService> logger)
         {
             this.appSettings = appSettings;
             this.env = env;
@@ -184,13 +188,69 @@ namespace ShareBear.Services
             await Task.WhenAll(tasks);
         }
 
+        public async Task CreateContainer(string containerName)
+        {
+            try
+            {
+                await _blobServiceClient.CreateBlobContainerAsync(containerName);
+            }
+            catch(Exception ex)
+            {
+                logger.LogError(ex.Message);
+            }
+        }
+
+        public async Task<ByteSize?> GetTotalSizeContainers()
+        {
+            try
+            {
+                string continuationToken = string.Empty;
+                var sizes = new Dictionary<string, long>();
+
+                do
+                {
+                    // Call the listing operation and enumerate the result segment.
+                    // When the continuation token is empty, the last segment has been returned
+                    // and execution can exit the loop.
+                    var resultSegment =
+                        _blobServiceClient.GetBlobContainersAsync()
+                        .AsPages(continuationToken);
+
+                    await foreach (Azure.Page<BlobContainerItem> containerPage in resultSegment)
+                    {
+
+                        foreach (BlobContainerItem containerItem in containerPage.Values)
+                        {
+                            BlobContainerClient container = new BlobContainerClient(appSettings.Value.AzureStorageConnectionString, containerItem.Name);
+
+                            var size = container.GetBlobs().Sum(b => b.Properties.ContentLength.GetValueOrDefault());
+
+                            sizes.Add(containerItem.Name, size);
+                        }
+
+                        // Get the continuation token and loop until it is empty.
+                        continuationToken = containerPage.ContinuationToken ?? "";
+
+                        Console.WriteLine();
+                    }
+
+                } while (continuationToken != string.Empty);
+
+                return ByteSize.FromBytes(sizes.Sum(e => e.Value));
+            }
+            catch(Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return null;
+            }
+        }
+
+
         public async Task UploadFile(string containerName, string fileName, IFormFile file)
         {
             try
             {
-                var blobContainerResponse = await _blobServiceClient.CreateBlobContainerAsync(containerName);
-
-                var blobContainer = blobContainerResponse.Value;
+                var blobContainer = _blobServiceClient.GetBlobContainerClient(containerName);
 
                 var blob = blobContainer.GetBlobClient(fileName);
 

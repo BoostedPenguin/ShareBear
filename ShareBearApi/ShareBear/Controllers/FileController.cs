@@ -5,9 +5,9 @@ namespace ShareBear.Controllers
 {
     public class FileController : ControllerBase
     {
-        private readonly IFileService fileService;
+        private readonly IAzureStorageService fileService;
 
-        public FileController(IFileService fileService)
+        public FileController(IAzureStorageService fileService)
         {
             this.fileService = fileService;
         }
@@ -18,10 +18,24 @@ namespace ShareBear.Controllers
         {
             try
             {
-                if (files == null || files.Count == 0)
-                    return BadRequest();
+                await fileService.GetTotalSizeContainers();
 
-                //await fileService.UploadFile(files[0]);
+                return Ok("Success");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return Ok();
+            }
+        }
+
+        [Route("test")]
+        [HttpPost]
+        public async Task<IActionResult> Test()
+        {
+            try
+            {
+                await fileService.GetTotalSizeContainers();
 
                 return Ok("Success");
             }

@@ -11,9 +11,9 @@ namespace ShareBear.Services
         private System.Timers.Timer? timer = null;
         private readonly IDbContextFactory<DefaultContext> contextFactory;
         private readonly ILogger<ScheduledFileDeletion> logger;
-        private readonly IFileService fileService;
+        private readonly IAzureStorageService fileService;
 
-        public ScheduledFileDeletion(IDbContextFactory<DefaultContext> contextFactory, ILogger<ScheduledFileDeletion> logger, IFileService fileService)
+        public ScheduledFileDeletion(IDbContextFactory<DefaultContext> contextFactory, ILogger<ScheduledFileDeletion> logger, IAzureStorageService fileService)
         {
             this.contextFactory = contextFactory;
             this.logger = logger;
