@@ -134,7 +134,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-app.UseMiddleware<VisitorAuthorizeMiddleware>();
 
 await PrepService.PrepMigration(app);
 

@@ -2,11 +2,18 @@
 using Azure.Storage.Blobs;
 using Azure.Storage.Sas;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Options;
+using ShareBear.Data.Models.FingerprintJs;
+using ShareBear.Filters;
 using ShareBear.Helpers;
+using System.Text.Json;
 
 namespace ShareBear.Controllers
 {
+
+
+
     [ApiController]
     [Route("api/[controller]")]
     public class WeatherForecastController : ControllerBase
@@ -25,6 +32,7 @@ namespace ShareBear.Controllers
             this.appSettings = appSettings;
         }
 
+        [TypeFilter(typeof(VisitorAuthorizeFilter))]
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
