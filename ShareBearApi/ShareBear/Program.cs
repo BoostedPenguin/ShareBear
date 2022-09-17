@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ShareBear.Data;
 using ShareBear.Helpers;
+using ShareBear.Middleware;
 using ShareBear.Services;
 using System.Text;
 
@@ -115,6 +116,12 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+//app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder =>
+//{
+//    appBuilder.UseMiddleware<VisitorAuthorizeMiddleware>();
+//});
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -127,6 +134,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseMiddleware<VisitorAuthorizeMiddleware>();
 
 await PrepService.PrepMigration(app);
 
