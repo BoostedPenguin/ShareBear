@@ -65,7 +65,7 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
     {
-        builder.WithOrigins("http://localhost:19006/, http://192.168.0.100:19006/, exp://192.168.0.100:19000, https://192.168.0.100.nip.io:19006/")
+        builder.WithOrigins("http://localhost:3000/,https://localhost:3000/ ,http://192.168.0.100:19006/")
                     .SetIsOriginAllowed((host) => true)
                     .AllowAnyHeader()
                     .AllowAnyMethod()
@@ -127,6 +127,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors();
 
 app.UseHttpsRedirection();
 

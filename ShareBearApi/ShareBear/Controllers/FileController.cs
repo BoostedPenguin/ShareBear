@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShareBear.Data.Requests;
 using ShareBear.Filters;
 using ShareBear.Helpers;
 using ShareBear.Services;
@@ -39,16 +40,16 @@ namespace ShareBear.Controllers
         }
 
         [HttpPost("container/create")]
-        public async Task<IActionResult> GenerateContainer(List<IFormFile> files)
+        public async Task<IActionResult> GenerateContainer([FromForm]GenerateContainerRequest request)
         {
             try
             {
-                if(files.Count == 0)
+                if(request.FormFiles.Count == 0)
                     return BadRequest(new {Message = "You need to upload at least 1 file to create a container."});
 
                 var visitorId = HttpContext.GetVisitorId();
 
-                var container = await fileAccessService.GenerateContainer(visitorId, files);
+                var container = await fileAccessService.GenerateContainer(visitorId, request.FormFiles);
 
                 return Ok(container);
             }
