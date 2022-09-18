@@ -86,7 +86,7 @@ namespace ShareBear.Services
             await db.AddAsync(visitorContainer);
             await db.SaveChangesAsync();
 
-            return await GetContainerFiles(visitorContainer);
+            return await GetContainerFiles(visitorId, visitorContainer, db);
 
         }
 
@@ -100,10 +100,10 @@ namespace ShareBear.Services
                 .Include(e => e.ContainerFiles)
                 .FirstOrDefaultAsync(e => e.ShortCodeString == shortRequestCode);
 
-            return await GetContainerFiles(container);
+            return await GetContainerFiles(visitorId, container, db);
         }
         
-        private async Task<ContainerHubsDto> GetContainerFiles(ContainerHubs? container)
+        private async Task<ContainerHubsDto> GetContainerFiles(string visitorId, ContainerHubs? container, DefaultContext db)
         {
             if (container == null)
                 throw new DirectoryNotFoundException("This container does not exist.");
@@ -118,6 +118,10 @@ namespace ShareBear.Services
 
 
             var signedLinks = await azureStorageService.GetSignedContainerDownloadLinks(container.ContainerName);
+
+            container.ContainerHubAccessLogs.Add(new ContainerHubAccessLogs(visitorId, ContainerUserActions.DOWNLOADED_FILES));
+            db.Update(container);
+            await db.SaveChangesAsync();
 
             var result = mapper.Map<ContainerHubsDto>(container);
 
