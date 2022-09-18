@@ -1,7 +1,7 @@
 import { useVisitorData } from "@fingerprintjs/fingerprintjs-pro-react"
 import { useState } from 'react'
 
-export default function fpjs() {
+export default function Fpjs() {
     const { isLoading, error, data, getData } = useVisitorData({
         extendedResult: true
     }, { immediate: true })
