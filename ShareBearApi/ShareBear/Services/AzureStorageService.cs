@@ -5,6 +5,7 @@ using Azure.Storage.Sas;
 using ByteSizeLib;
 using Microsoft.Extensions.Options;
 using Myrmec;
+using ShareBear.Data.Models;
 using ShareBear.Helpers;
 
 namespace ShareBear.Services
@@ -14,7 +15,7 @@ namespace ShareBear.Services
         Task CreateContainer(string containerName);
         Task DeleteContainer(string containerName);
         Task DeleteFile(string containerName, string fileName);
-        Task<ContainerSASItems?> GetSignedContainerDownloadLinks(string containerName);
+        Task<ContainerSASItems[]> GetSignedContainerDownloadLinks(string containerName);
         Task<ByteSize?> GetTotalSizeContainers();
         Task UploadFile(string containerName, string fileName, IFormFile file);
         Task UploadFiles(string containerName, List<FormFileFileNames> files);
@@ -22,14 +23,13 @@ namespace ShareBear.Services
 
     public class ContainerSASItems
     {
-        public ContainerSASItems(string containerName, string baseUri)
+        public ContainerSASItems(string fileName, string signedItemUrl)
         {
-            ContainerName = containerName;
-            BaseUri = baseUri;
+            FileName = fileName;
+            SignedItemUrl = signedItemUrl;
         }
-        public string ContainerName { get; set; }
-        public string BaseUri { get; set; }
-        public List<string> ContainerItemsUris { get; set; } = new List<string>();
+        public string FileName { get; set; }
+        public string SignedItemUrl { get; set; }
     }
 
     public struct FormFileFileNames
@@ -123,11 +123,10 @@ namespace ShareBear.Services
             }
         }
 
-        public async Task<ContainerSASItems?> GetSignedContainerDownloadLinks(string containerName)
+        public async Task<ContainerSASItems[]> GetSignedContainerDownloadLinks(string containerName)
         {
             try
             {
-
                 var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
 
                 if (!await containerClient.ExistsAsync())
@@ -144,9 +143,9 @@ namespace ShareBear.Services
                 var blobSasBuilder = new BlobSasBuilder
                 {
                     //StartsOn = DateTime.UtcNow.Subtract(TimeSpan.FromMinutes(15d)),
-                    ExpiresOn = DateTime.UtcNow.AddDays(15),
-                    BlobContainerName = "testingcontainer",
-                    
+                    ExpiresOn = DateTime.UtcNow.AddDays(3),
+                    BlobContainerName = containerName,
+
                     // If you omit this, it's going to create an sas for every container item
                     //BlobName = "test.png",
                 };
@@ -156,27 +155,27 @@ namespace ShareBear.Services
                 var sasQueryParameters = blobSasBuilder.ToSasQueryParameters(storageSharedKeyCredential);
 
 
-
-                var result = new ContainerSASItems(containerName, baseUri.ToString());
-
-
                 var sasUri = new UriBuilder(baseUri)
                 {
                     Query = sasQueryParameters.ToString()
                 };
 
+                var result = new List<ContainerSASItems>();
+
                 foreach (var item in containerBlobs)
                 {
-                    sasUri.Path = baseUri.ToString() + "/" + item.Name;
-                    result.ContainerItemsUris.Add(sasUri.ToString());
+                    sasUri.Path = containerName + "/" + item.Name;
+
+                    result.Add(new ContainerSASItems(item.Name, sasUri.ToString()));
                 }
 
-                return result;
+
+                return result.ToArray();
             }
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                return null;
+                return Array.Empty<ContainerSASItems>();
             }
         }
 

@@ -25,7 +25,6 @@ builder.Services.AddHttpClient();
 // Automapper config
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-
 // Database source config
 if (builder.Environment.IsProduction())
 {

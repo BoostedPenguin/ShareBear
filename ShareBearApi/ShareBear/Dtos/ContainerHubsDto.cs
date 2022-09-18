@@ -12,6 +12,6 @@ namespace ShareBear.Dtos
         public DateTime ExpiresAt { get; set; }
         public DateTime CreatedAt { get; set; }
 
-        public ContainerSASItems? ContainerFilesLinks { get; set; } 
+        public ContainerFilesDto[] ContainerFiles { get; set; } = Array.Empty<ContainerFilesDto>();
     }
 }

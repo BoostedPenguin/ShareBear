@@ -1,50 +1,61 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShareBear.Filters;
+using ShareBear.Helpers;
 using ShareBear.Services;
 
 namespace ShareBear.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
+    [TypeFilter(typeof(VisitorAuthorizeFilter))]
     public class FileController : ControllerBase
     {
-        private readonly IAzureStorageService fileService;
         private readonly IFileAccessService fileAccessService;
 
-        public FileController(IAzureStorageService fileService, IFileAccessService fileAccessService)
+        public FileController(IFileAccessService fileAccessService)
         {
-            this.fileService = fileService;
             this.fileAccessService = fileAccessService;
         }
 
-        [Route("uploadFile")]
-        [HttpPost]
-        public async Task<IActionResult> UploadFile([FromForm] List<IFormFile> files)
+
+
+        [HttpGet("container")]
+        public async Task<IActionResult> GetContainerFilesShort([FromQuery] string shortRequestCode)
         {
             try
             {
-                await fileAccessService.GenerateContainer("demovisitorid", files);
 
-                return Ok("Success");
+                var visitorId = HttpContext.GetVisitorId();
+
+                var container = await fileAccessService.GetContainerFiles(visitorId, shortRequestCode);
+
+                return Ok(container);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                return Ok();
+                return BadRequest(new {Message = ex.Message});
             }
         }
 
-        [Route("test")]
-        [HttpPost]
-        public async Task<IActionResult> Test()
+        [HttpPost("container/create")]
+        public async Task<IActionResult> GenerateContainer(List<IFormFile> files)
         {
             try
             {
-                await fileService.GetTotalSizeContainers();
+                if(files.Count == 0)
+                    return BadRequest(new {Message = "You need to upload at least 1 file to create a container."});
 
-                return Ok("Success");
+                var visitorId = HttpContext.GetVisitorId();
+
+                var container = await fileAccessService.GenerateContainer(visitorId, files);
+
+                return Ok(container);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                return Ok();
+                return BadRequest(new { Message = ex.Message });
             }
         }
     }

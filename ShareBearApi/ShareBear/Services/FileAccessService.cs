@@ -16,7 +16,8 @@ namespace ShareBear.Services
 
     public interface IFileAccessService
     {
-        Task GenerateContainer(string visitorId, List<IFormFile> files);
+        Task<ContainerHubsDto> GenerateContainer(string visitorId, List<IFormFile> files);
+        Task<ContainerHubsDto> GetContainerFiles(string visitorId, string shortRequestCode);
     }
 
     public class FileAccessService : IFileAccessService
@@ -47,7 +48,7 @@ namespace ShareBear.Services
         /**
          * The entry point of creating a bucket
          */
-        public async Task GenerateContainer(string visitorId, List<IFormFile> files)
+        public async Task<ContainerHubsDto> GenerateContainer(string visitorId, List<IFormFile> files)
         {
             var size = await azureStorageService.GetTotalSizeContainers();
 
@@ -84,6 +85,9 @@ namespace ShareBear.Services
             containerFiles.ForEach(e => visitorContainer.ContainerFiles.Add(e));
             await db.AddAsync(visitorContainer);
             await db.SaveChangesAsync();
+
+            return await GetContainerFiles(visitorContainer);
+
         }
 
 
@@ -96,16 +100,31 @@ namespace ShareBear.Services
                 .Include(e => e.ContainerFiles)
                 .FirstOrDefaultAsync(e => e.ShortCodeString == shortRequestCode);
 
+            return await GetContainerFiles(container);
+        }
+        
+        private async Task<ContainerHubsDto> GetContainerFiles(ContainerHubs? container)
+        {
             if (container == null)
                 throw new DirectoryNotFoundException("This container does not exist.");
+
+            if (container.ContainerFiles == null)
+            {
+                return mapper.Map<ContainerHubsDto>(container);
+            }
 
             if (container.ExpiresAt <= DateTime.UtcNow)
                 throw new ArgumentException("This container has expired");
 
 
+            var signedLinks = await azureStorageService.GetSignedContainerDownloadLinks(container.ContainerName);
+
             var result = mapper.Map<ContainerHubsDto>(container);
 
-            result.ContainerFilesLinks = await azureStorageService.GetSignedContainerDownloadLinks(container.ContainerName);
+            foreach (var file in result.ContainerFiles)
+            {
+                file.SignedItemUrl = signedLinks.First(e => e.FileName == file.FileName).SignedItemUrl;
+            }
 
             return result;
         }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ShareBear.Data.Models;
 using ShareBear.Dtos;
+using ShareBear.Services;
 
 namespace ShareBear.Profiles
 {
@@ -8,7 +9,8 @@ namespace ShareBear.Profiles
     {
         public MappingProfile()
         {
-            CreateMap<ContainerHubsDto, ContainerHubs>();
+            CreateMap<ContainerHubs, ContainerHubsDto>();
+            CreateMap<ContainerFiles, ContainerFilesDto>();
         }
     }
 }
