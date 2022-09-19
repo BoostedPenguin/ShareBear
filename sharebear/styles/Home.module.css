@@ -1,4 +1,5 @@
 .homeContainer {
+  background: #FFEAD9;
   height: calc(100vh - 69px);
   position: relative;
 }
