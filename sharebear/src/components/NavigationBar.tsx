@@ -109,7 +109,7 @@ const NavigationBar = () => {
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: '#5D2F27', display: 'block', mx: 2 }}
+                sx={{ my: 2, color: '#5D2F27', display: 'block', mx: 2, fontWeight: 700 }}
               >
                 {page}
               </Button>
