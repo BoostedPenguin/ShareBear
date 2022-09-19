@@ -5,7 +5,7 @@ import styles from '../styles/Home.module.css'
 const Home: NextPage = () => {
   return (
     <div>
-      <Button variant="contained">Hello World</Button>
+      {/* <Button variant="contained">Hello World</Button> */}
     </div>
   )
 }

@@ -5,6 +5,7 @@ import theme from '../src/theme'
 import { ThemeProvider } from '@mui/material/styles'
 import { CssBaseline } from '@mui/material'
 import { FpjsProvider } from '@fingerprintjs/fingerprintjs-pro-react'
+import NavigationBar from '../src/components/NavigationBar'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -21,6 +22,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <ThemeProvider theme={theme}>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
+          <NavigationBar />
           <Component {...pageProps} />
         </ThemeProvider>
       </FpjsProvider>
