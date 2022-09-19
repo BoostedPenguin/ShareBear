@@ -27,31 +27,33 @@ const Home: NextPage = () => {
           alignContent: "center",
           height: "100%"
         }}>
-       <Stack
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
-          spacing={4}>
-          <Typography
-            variant="h4"
-            sx={{
-              display: "flex",
-              fontWeight: 700,
-              maxWidth: 500,
-              zIndex: 1,
-              color: "#502720",
-              textAlign: "center",
-            }}
-          >
-            ShareBear is awesome
-            State of the art crap,
-            with a bunch of crap
-          </Typography>
-          <Button size="large" endIcon={<HoneyPotIcon />} color='secondary' variant="contained">Create a bucket</Button>
-          <Button size="medium" color='secondary' variant="contained">Join a bucket</Button>
-        </Stack>
+          <Stack
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            spacing={4}>
+            <Typography
+              variant="h4"
+              sx={{
+                fontFamily: 'Aref Ruqaa Ink',
+                maxWidth: 500,
+                zIndex: 1,
+                color: "#502720",
+                textAlign: "center",
+              }}
+            >
+              <b>ShareBear file transfer</b>
+              <br />
+              <Box mt={2}>
+                
+              Share files between any device without logging in!
+              </Box>
+            </Typography>
+            <Button size="large" endIcon={<HoneyPotIcon />} color='secondary' variant="contained">Create a bucket</Button>
+            <Button size="medium" color='secondary' variant="contained">Join a bucket</Button>
+          </Stack>
         </Box>
- 
+
       </Container>
     </div>
   )
