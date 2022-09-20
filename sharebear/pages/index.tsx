@@ -19,23 +19,28 @@ const Home: NextPage = () => {
       <div className={styles.upperRightShape} />
       <div className={styles.bearWithTable} />
       <Container sx={{
-        zIndex: 500
+        zIndex: 500,
+        height: "100%"
       }} maxWidth="xl">
+
         <Box sx={{
-          position: "absolute",
+          height: "100%",
           display: "flex",
-          alignContent: "center",
-          height: "100%"
+          alignItems: { xs: "flex-start", md: "center" },
+          justifyContent: { xs: "center", md: "flex-start" }
         }}>
           <Stack
             direction="column"
-            justifyContent="center"
             alignItems="center"
             spacing={4}>
             <Typography
               variant="h4"
               sx={{
                 fontFamily: 'Aref Ruqaa Ink',
+                fontSize: {
+                  xs: "1.5rem",
+                  md: "2.125rem",
+                },
                 maxWidth: 500,
                 zIndex: 1,
                 color: "#502720",
@@ -45,15 +50,14 @@ const Home: NextPage = () => {
               <b>ShareBear file transfer</b>
               <br />
               <Box mt={2}>
-                
-              Share files between any device without logging in!
+                Share files between any device without logging in!
               </Box>
+
             </Typography>
             <Button size="large" endIcon={<HoneyPotIcon />} color='secondary' variant="contained">Create a bucket</Button>
             <Button size="medium" color='secondary' variant="contained">Join a bucket</Button>
           </Stack>
         </Box>
-
       </Container>
     </div>
   )

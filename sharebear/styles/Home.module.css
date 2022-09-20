@@ -3,6 +3,7 @@
   height: calc(100vh - 69px);
   position: relative;
 }
+
 .upperRightShape {
   position: absolute;
   margin-top: -1px;
@@ -10,7 +11,7 @@
   right: 0px;
   background-image: url("/home/upperRightShape.svg");
   background-repeat: no-repeat;
-  background-position: right; 
+  background-position: right top;
   background-size: contain;
   width: 100%;
   height: 100%;
@@ -22,32 +23,88 @@
   bottom: 0px;
   background-image: url("/home/lowerRightShape.svg");
   background-repeat: no-repeat;
-  background-position: right; 
-  background-size: contain;
+  background-size: cover;
   width: 100%;
   height: 100%;
 }
 
-@keyframes animatedBackground {
-  from {
-    background-position: 200% 0px;
-  }
-  to {
-    background-position: 100% 0px;
-  }
-}
 
 
 .bearWithTable {
   display: inline-block;
   position: absolute;
-  right: 0px;
   background-image: url("/home/bearWithTable.svg");
   background-repeat: no-repeat;
-  background-position: right; 
   background-size: contain;
-  animation: 1s ease-out 0s 1 animatedBackground;
   width: 100%;
   height: 90%;
   bottom: 0%;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .bearWithTable {
+    animation: 1s ease-out 0s 1 slidingBearBackgroundSmall;
+    background-position: bottom;
+  }
+
+  .lowerRightShape {
+    max-height: 60vh;
+    background-position: bottom;
+    background-size: cover;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .bearWithTable {
+    max-height: 60vh;
+
+    animation: 1s ease-out 0s 1 slidingBearBackgroundSmall;
+    background-position: bottom;
+  }
+}
+
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 900px) {
+  .bearWithTable {
+    animation: 1s ease-out 0s 1 slidingBearBackgroundBig;
+    background-position: right;
+    max-height: 80%;
+
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .lowerRightShape {
+    background-size: contain;
+    background-position: right bottom;
+  }
+
+  .bearWithTable {
+    max-height: 90%;
+  }
+}
+
+@keyframes slidingBearBackgroundSmall {
+  from {
+    background-position: 992px bottom;
+  }
+
+  to {
+    background-position: 50% bottom;
+  }
+}
+
+
+@keyframes slidingBearBackgroundBig {
+  from {
+    background-position: 200% 0px;
+  }
+
+  to {
+    background-position: 100% 0px;
+  }
 }
