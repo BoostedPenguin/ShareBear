@@ -5,16 +5,32 @@ import Container from '@mui/material/Container';
 import styles from '../../../styles/CreateBucket.module.css'
 import HoneyDrop from '../icons/honeyDrop.svg'
 import Typography from '@mui/material/Typography';
-import { useDropzone, FileWithPath } from 'react-dropzone';
+import { useDropzone, FileWithPath, FileRejection } from 'react-dropzone';
 import React, { useMemo, useCallback, useState, useEffect } from 'react';
 import HoneyPotIcon from '../icons/HoneyPotIcon';
 
 
 export default function CreateBucket() {
 
+    const maxFileSize: number = 50000000
     const [dragZoneText, setDragZoneText] = useState<string>()
-    const onDrop = useCallback((acceptedFiles: FileWithPath[]) => {
+    const [dragZoneErrors, setDragZoneErrors] = useState<string[]>()
+    const onDrop = useCallback((acceptedFiles: FileWithPath[], rejectedFiles: FileRejection[]) => {
+        console.log(rejectedFiles)
         console.log(acceptedFiles)
+
+        if (rejectedFiles.length > maxFileSize) {
+            console.log("eh")
+            setDragZoneErrors(rejectedFiles.flatMap(e => e.errors.flatMap(y => y.message)))
+            return
+        }
+
+
+        const total = acceptedFiles.reduce((partial, current) => partial + current.size, 0)
+        if (total > 5) {
+            setDragZoneErrors([`The maximum size of each bucket can be only 50MBs. The size of your selected files is ${formatBytes(total)}`])
+            return;
+        }
         // Do something with the files
     }, [])
 
@@ -25,7 +41,10 @@ export default function CreateBucket() {
         isDragAccept,
         isDragReject
     } = useDropzone({
-        onDrop
+        onDrop,
+
+        // 50 mb
+        //maxSize: maxFileSize
     });
 
 
@@ -53,7 +72,6 @@ export default function CreateBucket() {
     const acceptStyle = {
         borderWidth: 5,
         backgroundColor: 'rgba(142, 80, 69, 0.4)',
-        borderColor: '#00e676'
     };
 
     const rejectStyle = {
@@ -71,6 +89,18 @@ export default function CreateBucket() {
         isDragReject
     ]);
 
+    function formatBytes(bytes: number, decimals = 2) {
+        if (!+bytes) return '0 Bytes'
+    
+        const k = 1024
+        const dm = decimals < 0 ? 0 : decimals
+        const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+    
+        const i = Math.floor(Math.log(bytes) / Math.log(k))
+    
+        return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
+    }
+
 
 
     useEffect(() => {
@@ -84,7 +114,7 @@ export default function CreateBucket() {
 
             <Container sx={{
                 height: "100%"
-            }} maxWidth="xl">
+            }} maxWidth="lg">
                 <Stack spacing={5} sx={{
                     height: "100%",
                     justifyContent: "center",
