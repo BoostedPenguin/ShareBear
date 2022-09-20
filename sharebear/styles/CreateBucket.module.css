@@ -1,0 +1,27 @@
+.createBucketContainer {
+    background: #FFEAD9;
+    height: 100vh;
+    position: relative; 
+}
+
+.upperLeftHoneyDrop {
+    position: absolute;
+    background-image: url("/createBucket/honeyDrop.svg");
+    background-repeat: no-repeat;
+    background-position: left top;
+    background-size: contain;
+    width: 100%;
+    height: 50%;
+}
+
+.lowerRightHoneycomb {
+    position: absolute;
+    background-image: url("/createBucket/lowerRightShape.svg");
+    background-repeat: no-repeat;
+    background-position: right bottom;
+    background-size: contain;
+    width: 100%;
+    height: 50%;
+    right: 0px;
+    bottom: 0px;
+}

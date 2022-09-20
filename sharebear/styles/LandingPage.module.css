@@ -9,7 +9,7 @@
   margin-top: -1px;
   top: 0px;
   right: 0px;
-  background-image: url("/home/upperRightShape.svg");
+  background-image: url("/landingPage/upperRightShape.svg");
   background-repeat: no-repeat;
   background-position: right top;
   background-size: contain;
@@ -21,7 +21,7 @@
   position: absolute;
   right: 0px;
   bottom: 0px;
-  background-image: url("/home/lowerRightShape.svg");
+  background-image: url("/landingPage/lowerRightShape.svg");
   background-repeat: no-repeat;
   background-size: cover;
   width: 100%;
@@ -33,7 +33,7 @@
 .bearWithTable {
   display: inline-block;
   position: absolute;
-  background-image: url("/home/bearWithTable.svg");
+  background-image: url("/landingPage/bearWithTable.svg");
   background-repeat: no-repeat;
   background-size: contain;
   width: 100%;
