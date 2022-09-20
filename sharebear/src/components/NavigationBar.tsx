@@ -48,7 +48,7 @@ const NavigationBar = () => {
           <Box sx={{
             display: { xs: 'none', md: 'flex' },
           }}>
-            <Image src="/shareBearLogo.svg" height={"64"} width={"100%"} />
+            <Image src="/shareBearLogo.svg" alt='Logo' height={"64"} width={"100%"} />
           </Box>
 
           {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
@@ -100,7 +100,7 @@ const NavigationBar = () => {
             color: 'inherit',
             textDecoration: 'none',
           }}>
-            <Image src="/shareBearLogo.svg" height={"64"} width={"100%"} />
+            <Image src="/shareBearLogo.svg" alt='Logo' height={"64"} width={"100%"} />
 
           </Box>
 

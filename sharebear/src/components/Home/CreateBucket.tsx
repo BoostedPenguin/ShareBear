@@ -86,7 +86,11 @@ export default function CreateBucket() {
     }), [
         isFocused,
         isDragAccept,
-        isDragReject
+        isDragReject,
+        
+        focusedStyle,
+        acceptStyle,
+        rejectStyle
     ]);
 
     function formatBytes(bytes: number, decimals = 2) {

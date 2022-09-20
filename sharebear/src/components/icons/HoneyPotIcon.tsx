@@ -1,5 +1,5 @@
 import React from "react";
-export default function HoneyPotIcon({ width = 42, height = 42 }: { width: number, height: number }) {
+export default function HoneyPotIcon({ width = 42, height = 42 }: { width?: number, height?: number }) {
     return (
         <svg width={width} height={height} viewBox="0 0 84 84" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M18.4406 26.2109L15.8681 28.8622L31.8609 43.8444C31.8609 43.8444 68.3812 35.4969 68.3812 35.1819C68.3812 34.8669 68.5387 29.2494 68.5387 29.2494C68.5387 29.2494 68.0531 28.6063 67.7316 28.265C67.41 27.9238 65.7037 26.4013 65.7037 26.4013L18.4406 26.2109Z" fill="#AC5811" />
