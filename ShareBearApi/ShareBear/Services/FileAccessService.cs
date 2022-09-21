@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
+using ByteSizeLib;
 using Microsoft.EntityFrameworkCore;
 using ShareBear.Data;
 using ShareBear.Data.Models;
+using ShareBear.Data.Requests;
 using ShareBear.Dtos;
+using System.Drawing;
 
 namespace ShareBear.Services
 {
@@ -18,12 +21,14 @@ namespace ShareBear.Services
     {
         Task<ContainerHubsDto> GenerateContainer(string visitorId, List<IFormFile> files);
         Task<ContainerHubsDto> GetContainerFiles(string visitorId, string shortRequestCode);
+        Task<GetStorageStatisticsResponse> GetStorageStatistics();
     }
 
     public class FileAccessService : IFileAccessService
     {
         // In MB
         const int MaxStorageSize = 1000;
+
         const int MaxActiveContainersPerVisitor = 3;
         private readonly IDbContextFactory<DefaultContext> contextFactory;
         private readonly IAzureStorageService azureStorageService;
@@ -88,6 +93,20 @@ namespace ShareBear.Services
 
             return await GetContainerFiles(visitorId, visitorContainer, db);
 
+        }
+
+        public async Task<GetStorageStatisticsResponse> GetStorageStatistics()
+        {
+            using var db = contextFactory.CreateDbContext();
+
+            var usedSpace = await azureStorageService.GetTotalSizeContainers();
+
+            return new GetStorageStatisticsResponse()
+            {
+                HasFreeSpace = usedSpace.Value.MegaBytes < MaxStorageSize,
+                MaxStorageBytes = ByteSize.FromMegaBytes(MaxStorageSize).Bytes,
+                UsedStorageBytes = usedSpace.Value.Bytes,
+            };
         }
 
 

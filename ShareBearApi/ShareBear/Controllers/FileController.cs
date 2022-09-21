@@ -8,7 +8,6 @@ namespace ShareBear.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [TypeFilter(typeof(VisitorAuthorizeFilter))]
     public class FileController : ControllerBase
     {
         private readonly IFileAccessService fileAccessService;
@@ -19,7 +18,23 @@ namespace ShareBear.Controllers
         }
 
 
+        [HttpGet("storage")]
+        public async Task<IActionResult> GetStorageStatistics()
+        {
+            try
+            {
+                var container = await fileAccessService.GetStorageStatistics();
 
+                return Ok(container);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
+        [TypeFilter(typeof(VisitorAuthorizeFilter))]
         [HttpGet("container")]
         public async Task<IActionResult> GetContainerFilesShort([FromQuery] string shortRequestCode)
         {
@@ -39,6 +54,7 @@ namespace ShareBear.Controllers
             }
         }
 
+        [TypeFilter(typeof(VisitorAuthorizeFilter))]
         [HttpPost("container/create")]
         public async Task<IActionResult> GenerateContainer([FromForm]GenerateContainerRequest request)
         {
