@@ -1,3 +1,4 @@
+import { FileWithPath } from "react-dropzone";
 import { ContainerHubsDto, GetStorageStatisticsResponse } from "../types/containerTypes";
 import axios from "./axios";
 
@@ -8,9 +9,8 @@ export async function GetServiceFreeSpace() {
     return data
 }
 
-export async function CreateContainer(files: FileList, visitorId: string) {
-
-    var formData = new FormData();
+export async function CreateContainer(files: FileWithPath[], visitorId: string) {
+    let formData = new FormData();
     for (const file in files) {
         formData.append("FormFiles", files[file]);
     }

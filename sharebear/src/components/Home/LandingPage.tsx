@@ -5,15 +5,8 @@ import Container from '@mui/material/Container';
 import styles from '../../../styles/LandingPage.module.css'
 import HoneyPotIcon from '../icons/HoneyPotIcon'
 import Typography from '@mui/material/Typography';
-import { useState, useMemo, useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { GetServiceFreeSpace } from '../../../lib/fileService';
 
 const LandingPage = () => {
-  const { data, error } = useQuery(["availableStorage"], () => GetServiceFreeSpace())
-
-
-
   return (
     <div className={styles.homeContainer}>
       <div className={styles.lowerRightShape} />
