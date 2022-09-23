@@ -23,9 +23,15 @@ jobs:
           include-prerelease: true
 
       - name: Build with dotnet
+        working-directory: ./ShareBearApi
         run: dotnet build --configuration Release
+        
+      - name: Test
+        working-directory: ./ShareBearApi
+        run: dotnet test
 
       - name: dotnet publish
+        working-directory: ./ShareBearApi
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
