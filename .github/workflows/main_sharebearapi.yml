@@ -5,15 +5,13 @@ name: Build and deploy ASP.Net Core app to Azure Web App - sharebearapi
 
 on:
   push:
-    paths:
-    - 'ShareBearApi/**'
     branches:
       - main
   workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v2
@@ -25,15 +23,9 @@ jobs:
           include-prerelease: true
 
       - name: Build with dotnet
-        working-directory: ./ShareBearApi
         run: dotnet build --configuration Release
 
-      - name: Test
-        working-directory: ./ShareBearApi
-        run: dotnet test
-        
       - name: dotnet publish
-        working-directory: ./ShareBearApi
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
@@ -43,7 +35,7 @@ jobs:
           path: ${{env.DOTNET_ROOT}}/myapp
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: build
     environment:
       name: 'Production'
@@ -61,5 +53,5 @@ jobs:
         with:
           app-name: 'sharebearapi'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A1795180FB9D436180F96CA9E96A0C1E }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_455A8B009B184F3FB3C1EC59053AA413 }}
           package: .
