@@ -6,26 +6,37 @@ import { ThemeProvider } from '@mui/material/styles'
 import { CssBaseline } from '@mui/material'
 import { FpjsProvider } from '@fingerprintjs/fingerprintjs-pro-react'
 import NavigationBar from '../src/components/NavigationBar'
+import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { useState } from 'react'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps<{ dehydratedState: unknown }>) {
+  const [queryClient] = useState(() => new QueryClient())
+
   return (
     <>
-      <FpjsProvider loadOptions={{
-        apiKey: process.env.NEXT_PUBLIC_FPJS_API_KEY ?? "",
-        region: "eu"
-      }}>
+      <QueryClientProvider client={queryClient}>
 
-        <Head>
-          <meta name="viewport" content="initial-scale=1, width=device-width" />
-        </Head>
+        <FpjsProvider loadOptions={{
+          apiKey: process.env.NEXT_PUBLIC_FPJS_API_KEY ?? "",
+          region: "eu"
+        }}>
 
-        <ThemeProvider theme={theme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
-          <NavigationBar />
-          <Component {...pageProps} />
-        </ThemeProvider>
-      </FpjsProvider>
+          <Head>
+            <meta name="viewport" content="initial-scale=1, width=device-width" />
+          </Head>
+
+          <ThemeProvider theme={theme}>
+            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+            <CssBaseline />
+            <Hydrate state={pageProps.dehydratedState}>
+              <NavigationBar />
+              <Component {...pageProps} />
+              <ReactQueryDevtools initialIsOpen={false} />
+            </Hydrate>
+          </ThemeProvider>
+        </FpjsProvider>
+      </QueryClientProvider>
     </>
   )
   return <Component {...pageProps} />

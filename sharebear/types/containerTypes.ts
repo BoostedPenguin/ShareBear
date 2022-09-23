@@ -15,3 +15,9 @@ export interface ContainerFilesDto {
     fileSize: number;
     signedItemUrl: string;
 }
+
+export interface GetStorageStatisticsResponse {
+    maxStorageBytes: number;
+    usedStorageBytes: number;
+    hasFreeSpace: boolean;
+}

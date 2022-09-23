@@ -1,6 +1,6 @@
 import React from 'react';
-import { CreateContainer } from '../../src/services/fileService';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { CreateContainer } from '../../lib/fileService';
 
 const TestingFileUpload = () => {
     const { isLoading, error, data, getData } = useVisitorData({
