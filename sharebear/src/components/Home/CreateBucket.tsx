@@ -68,7 +68,7 @@ export default function CreateBucket() {
                     {availableStorage.data && !availableStorage.data.hasFreeSpace && <Alert variant="filled" severity="warning" sx={{
                         zIndex: 50,
                     }}>
-                        Currently there isn't any available storage for new buckets. Check back later.
+                        Currently there isn&apos;t any available storage for new buckets. Check back later.
                     </Alert>}
 
                     <Box sx={{

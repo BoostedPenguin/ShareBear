@@ -29,8 +29,8 @@ export default function JoinBucket() {
                 <Box sx={{
                     height: "100%",
                     display: "flex",
-                    alignItems: "center",
-                    justifyContent: "flex-start"
+                    alignItems: { xs: "flex-start", md: "center" },
+                    justifyContent: { xs: "center", md: "flex-start" }
                 }}>
                     <Stack
                         direction="column"
@@ -77,7 +77,7 @@ export default function JoinBucket() {
                         <Box sx={{
                             zIndex: 50
                         }} mb={5}>
-                            {codeElements.map((item, i) => (
+                            {[...Array(6)].map((item, i) => (
                                 <input onKeyDown={(e: any) => {
                                     if (e.key == "e" || e.key == "E") {
                                         e.preventDefault()
@@ -94,7 +94,7 @@ export default function JoinBucket() {
                                         itemsRef.current[i + 1]?.focus()
                                     else
                                         e.target.value = ""
-                                }} ref={el => itemsRef.current[i] = el} type="number" maxLength={1} className={styles.customInputBox} />
+                                }} ref={el => itemsRef.current[i] = el} key={i} type="number" maxLength={1} className={styles.customInputBox} />
                             ))}
                         </Box>
                     </Stack>
