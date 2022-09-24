@@ -1,0 +1,115 @@
+.joinBucketContainer {
+    background: #FFEAD9;
+    height: 100vh;
+    min-height: 300px;
+    position: relative;
+}
+
+.upperRightShape {
+    margin-top: -2px;
+    position: absolute;
+    background-image: url("/joinBucket/upperRightShape.svg");
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: contain;
+
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    right: 0px;
+}
+
+.lowerRightShape {
+    position: absolute;
+    background-image: url("/joinBucket/lowerRightShape.svg");
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: contain;
+
+    width: 100%;
+    height: 100%;
+    bottom: 0px;
+    right: 0px;
+}
+
+.nestShape {
+    display: inline-block;
+    position: absolute;
+    background-image: url("/joinBucket/nestBeesShape.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 100%;
+    height: 90%;
+    bottom: 0%;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .nestShape {
+        animation: 1s ease-out 0s 1 slidingBearBackgroundSmall;
+        background-position: bottom;
+    }
+
+    .lowerRightShape {
+        max-height: 60vh;
+        background-position: bottom;
+        background-size: cover;
+    }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+    .nestShape {
+        max-height: 60vh;
+
+        animation: 1s ease-out 0s 1 slidingBearBackgroundSmall;
+        background-position: bottom;
+    }
+}
+
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 900px) {
+    .nestShape {
+        animation: 1s ease-out 0s 1 slidingBearBackgroundBig;
+        background-position: right;
+        max-height: 80%;
+
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    .lowerRightShape {
+        background-size: contain;
+        background-position: right bottom;
+    }
+
+    .bearWithTable {
+        max-height: 90%;
+    }
+}
+
+
+.customInputBox {
+    margin-right: 5px;
+    border-radius: 25%;
+    outline: 10px;
+    outline-color: #000;
+    background-color: #44254A;
+    display: inline-block;
+    color: #fff;
+    font-size: 1.4em;
+    text-align: center;
+    width: 2em;
+    line-height: 2em;
+}
+
+/* Spin Buttons modified */
+input[type="number"].customInputBox::-webkit-outer-spin-button,
+input[type="number"].customInputBox::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    -moz-appearance: textfield;
+
+}

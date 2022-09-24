@@ -2,6 +2,7 @@ import { dehydrate, QueryClient } from '@tanstack/react-query';
 import type { GetServerSideProps, NextPage } from 'next'
 import { GetServiceFreeSpace } from '../lib/fileService';
 import CreateBucket from '../src/components/Home/CreateBucket';
+import JoinBucket from '../src/components/Home/JoinBucket';
 import LandingPage from '../src/components/Home/LandingPage';
 import PageGutter from '../src/components/Home/PageGutter';
 
@@ -11,6 +12,8 @@ const Home: NextPage = () => {
     <LandingPage />
     <PageGutter />
     <CreateBucket />
+    <PageGutter />
+    <JoinBucket />
     </>
   )
 }
