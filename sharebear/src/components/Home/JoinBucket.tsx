@@ -1,7 +1,8 @@
-import { Container, Box, Stack, Typography, Button } from '@mui/material'
+import { Container, Box, Stack, Typography, Button, IconButton } from '@mui/material'
 import styles from '../../../styles/JoinBucket.module.css'
 import HoneyPotIcon from '../icons/HoneyPotIcon'
 import { useEffect, useRef, useState } from "react"
+import { SendRounded } from '@mui/icons-material';
 
 
 export default function JoinBucket() {
@@ -101,6 +102,14 @@ export default function JoinBucket() {
 
                                     }} ref={el => itemsRef.current[i] = el} key={i} type="number" maxLength={1} className={styles.customInputBox} />
                             ))}
+                            <IconButton aria-label="Join bucket" style={{
+                                transform: "scale(1.8)"
+                            }} sx={{
+                                marginLeft: 2,
+                                color: "#44254A",
+                            }}>
+                                <SendRounded />
+                            </IconButton>
                         </Box>
                     </Stack>
                 </Box>
