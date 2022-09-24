@@ -15,6 +15,7 @@ namespace ShareBear.Services
         Task CreateContainer(string containerName);
         Task DeleteContainer(string containerName);
         Task DeleteFile(string containerName, string fileName);
+        Task DeleteOldContainers();
         Task<ContainerSASItems[]> GetSignedContainerDownloadLinks(string containerName);
         Task<ByteSize?> GetTotalSizeContainers();
         Task UploadFile(string containerName, string fileName, IFormFile file);
@@ -99,6 +100,51 @@ namespace ShareBear.Services
                 var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
 
                 await containerClient.DeleteIfExistsAsync();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+            }
+        }
+
+        public async Task DeleteOldContainers()
+        {
+            try
+            {
+                string continuationToken = string.Empty;
+                var oldContainersNames = new List<string>();
+                do
+                {
+                    var resultSegment =
+                        _blobServiceClient.GetBlobContainersAsync()
+                        .AsPages(continuationToken);
+
+                    await foreach (Azure.Page<BlobContainerItem> containerPage in resultSegment)
+                    {
+
+                        foreach (BlobContainerItem containerItem in containerPage.Values)
+                        {
+                            var containerLastModified = containerItem.Properties.LastModified;
+
+                            // Grace period of 5 days
+                            // In case last activity on the container is older than 5 days before today, delete it
+                            if(containerLastModified.AddDays(5) < DateTime.UtcNow)
+                            {
+                                oldContainersNames.Add(containerItem.Name);
+                            }
+                        }
+
+                        // Get the continuation token and loop until it is empty.
+                        continuationToken = containerPage.ContinuationToken ?? "";
+                    }
+
+                } while (continuationToken != string.Empty);
+
+                var deleteTasks = oldContainersNames.Select(e => DeleteContainer(e)).ToList();
+                await Task.WhenAll(deleteTasks);
+
+                if(oldContainersNames.Count > 0)
+                    logger.LogInformation($"Scheduled deletion found and deleted {oldContainersNames.Count} old non-database containers.");
             }
             catch (Exception ex)
             {

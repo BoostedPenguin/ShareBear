@@ -43,6 +43,14 @@ namespace ShareBear.Services
             DeleteExpiredContainers();
         }
 
+        /**
+         * Tries to delete expired containers which were not saved in database
+         */
+        private async Task DeleteOldContainers()
+        {
+            await fileService.DeleteOldContainers();
+        }
+
         private async void DeleteExpiredContainers()
         {
             try
@@ -50,10 +58,13 @@ namespace ShareBear.Services
                 logger.LogInformation("Scheduled deletion commencing...");
                 using var db = contextFactory.CreateDbContext();
 
+
+
                 var newlyExpiredContainers = await db.ContainerHubs.Where(e => e.ExpiresAt <= DateTime.UtcNow && e.IsActive).ToListAsync();
 
                 if (newlyExpiredContainers.Count == 0)
                 {
+                    await DeleteOldContainers();
                     logger.LogInformation($"Scheduled deletion completed. No entries. Next deletion in {ScheduledDeletionTime / 60 / 1000} minutes.");
                     return;
                 }
@@ -64,7 +75,10 @@ namespace ShareBear.Services
                 await Task.WhenAll(expiredContainerTasks);
 
 
+
                 await db.SaveChangesAsync();
+                
+                await DeleteOldContainers();
                 logger.LogInformation($"Scheduled deletion completed. Deleted entries: {newlyExpiredContainers.Count}. Next deletion in {ScheduledDeletionTime / 60 / 1000} minutes.");
             }
             catch (Exception ex)

@@ -13,7 +13,7 @@ export default function useCreateBucket() {
     const { getData } = useVisitorData()
 
 
-    const onDrop = useCallback((acceptedFiles: FileWithPath[], rejectedFiles: FileRejection[]) => {
+    const onDrop = useCallback(async (acceptedFiles: FileWithPath[], rejectedFiles: FileRejection[]) => {
 
         if (rejectedFiles.length > maxFileSize) {
             setDragZoneError(rejectedFiles.flatMap(e => e.errors.flatMap(y => y.message)).find(e => e.length > 0))
@@ -28,29 +28,16 @@ export default function useCreateBucket() {
         // Do something with the files
         setDragZoneError(undefined);
 
-        (async () => {
-            const freeSpaceResponse = await GetServiceFreeSpace().catch(ex => {
-                setDragZoneError(ex.response?.data?.message || ex.message)
-                return
-            })
-            if (!freeSpaceResponse) return
+        const visitorRequest = await getData()
+        if (!visitorRequest || !visitorRequest.visitorId) {
+            setDragZoneError("Error verifying user. Check back later.")
+            return
+        }
 
-            if (!freeSpaceResponse.hasFreeSpace) {
-                setDragZoneError("Currently there isn't any available storage for new buckets. Check back later.")
-                return
-            }
-
-            const visitorRequest = await getData()
-            if (!visitorRequest || !visitorRequest.visitorId) {
-                setDragZoneError("Error verifying user. Check back later.")
-                return
-            }
-
-            await CreateContainer(acceptedFiles, visitorRequest.visitorId).catch(ex => {
-                setDragZoneError(ex.response?.data?.message || ex.message)
-                return
-            })
-        })()
+        await CreateContainer(acceptedFiles, visitorRequest.visitorId).catch(ex => {
+            setDragZoneError(ex.response?.data?.message || ex.message)
+            return
+        })
     }, [getData])
 
     const {

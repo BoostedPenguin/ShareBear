@@ -64,11 +64,18 @@ export default function CreateBucket() {
                         {dragZoneError}
                     </Alert>}
 
-                    {/* On unavailable storage */}
+                    {/* On not enough storage storage */}
                     {availableStorage.data && !availableStorage.data.hasFreeSpace && <Alert variant="filled" severity="warning" sx={{
                         zIndex: 50,
                     }}>
                         Currently there isn&apos;t any available storage for new buckets. Check back later.
+                    </Alert>}
+
+                    {/* On available storage information not available */}
+                    {availableStorage.isError && <Alert variant="filled" severity="warning" sx={{
+                        zIndex: 50,
+                    }}>
+                        Error contacting the server. Check back later.
                     </Alert>}
 
                     <Box sx={{
