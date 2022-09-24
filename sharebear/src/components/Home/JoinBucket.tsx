@@ -6,14 +6,8 @@ import { useEffect, useRef, useState } from "react"
 
 export default function JoinBucket() {
     const itemsRef = useRef<Array<HTMLDivElement | null>>([])
-    const codeElements = [
-        0, 1, 2, 3, 4, 5
-    ]
     const [code, setCode] = useState<string>()
 
-    useEffect(() => {
-        itemsRef.current = itemsRef.current.slice(0, codeElements.length);
-    }, [codeElements]);
 
     return (
         <div className={styles.joinBucketContainer}>

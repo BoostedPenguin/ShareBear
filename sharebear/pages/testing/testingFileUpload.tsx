@@ -19,8 +19,8 @@ const TestingFileUpload = () => {
         if (!data?.visitorId)
             return
 
-        const res = await CreateContainer(fileEvent.files, data.visitorId)
-        console.log(res)
+        //const res = await CreateContainer(fileEvent.files, data.visitorId)
+        //console.log(res)
     }
 
     return (

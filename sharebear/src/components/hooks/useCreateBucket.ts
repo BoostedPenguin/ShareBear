@@ -26,33 +26,32 @@ export default function useCreateBucket() {
             return
         }
         // Do something with the files
-        setDragZoneError(undefined)
-        HandleUpload(acceptedFiles)
-    }, [])
+        setDragZoneError(undefined);
 
-    async function HandleUpload(files: FileWithPath[]) {
-        const freeSpaceResponse = await GetServiceFreeSpace().catch(ex => {
-            setDragZoneError(ex.response?.data?.message || ex.message)
-            return
-        })
-        if (!freeSpaceResponse) return
+        (async () => {
+            const freeSpaceResponse = await GetServiceFreeSpace().catch(ex => {
+                setDragZoneError(ex.response?.data?.message || ex.message)
+                return
+            })
+            if (!freeSpaceResponse) return
 
-        if (!freeSpaceResponse.hasFreeSpace) {
-            setDragZoneError("Currently there isn't any available storage for new buckets. Check back later.")
-            return
-        }
+            if (!freeSpaceResponse.hasFreeSpace) {
+                setDragZoneError("Currently there isn't any available storage for new buckets. Check back later.")
+                return
+            }
 
-        const visitorRequest = await getData()
-        if (!visitorRequest || !visitorRequest.visitorId) {
-            setDragZoneError("Error verifying user. Check back later.")
-            return
-        }
+            const visitorRequest = await getData()
+            if (!visitorRequest || !visitorRequest.visitorId) {
+                setDragZoneError("Error verifying user. Check back later.")
+                return
+            }
 
-        await CreateContainer(files, visitorRequest.visitorId).catch(ex => {
-            setDragZoneError(ex.response?.data?.message || ex.message)
-            return
-        })
-    }
+            await CreateContainer(acceptedFiles, visitorRequest.visitorId).catch(ex => {
+                setDragZoneError(ex.response?.data?.message || ex.message)
+                return
+            })
+        })()
+    }, [getData])
 
     const {
         getRootProps,
