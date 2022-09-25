@@ -8,6 +8,7 @@ import HoneyPotIcon from '../icons/HoneyPotIcon';
 import { Alert } from '@mui/material';
 import useAvailableStorage from '../hooks/useAvailableStorage';
 import useCreateBucket from '../hooks/useCreateBucket';
+import { Element } from 'react-scroll';
 
 
 export default function CreateBucket() {
@@ -22,97 +23,100 @@ export default function CreateBucket() {
     } = useCreateBucket()
 
     return (
-        <div className={styles.createBucketContainer} >
-            <div className={styles.lowerRightHoneycomb} />
-            <div className={styles.upperLeftHoneyDrop} />
+        <Element name="Create">
 
-            <Container sx={{
-                height: "100%",
+            <div className={styles.createBucketContainer} >
+                <div className={styles.lowerRightHoneycomb} />
+                <div className={styles.upperLeftHoneyDrop} />
 
-            }} maxWidth="lg">
-                <Stack spacing={5} sx={{
+                <Container sx={{
                     height: "100%",
-                    justifyContent: "center",
-                    alignContent: "center",
-                }}>
-                    <Box sx={{
-                        zIndex: 50,
+
+                }} maxWidth="lg">
+                    <Stack spacing={5} sx={{
+                        height: "100%",
+                        justifyContent: "center",
+                        alignContent: "center",
                     }}>
-                        <Typography
-                            variant="h3"
-                            sx={{
-                                fontFamily: 'Aref Ruqaa Ink',
-                                fontSize: {
-                                    // xs: "1.5rem",
-                                    // md: "2.125rem",
-                                },
-                                color: "#502720",
-                                textAlign: "center",
-                            }}
-                        >
-                            <Box>
-                                Create bucket
-                            </Box>
+                        <Box sx={{
+                            zIndex: 50,
+                        }}>
+                            <Typography
+                                variant="h3"
+                                sx={{
+                                    fontFamily: 'Aref Ruqaa Ink',
+                                    fontSize: {
+                                        // xs: "1.5rem",
+                                        // md: "2.125rem",
+                                    },
+                                    color: "#502720",
+                                    textAlign: "center",
+                                }}
+                            >
+                                <Box>
+                                    Create bucket
+                                </Box>
 
-                        </Typography>
-                    </Box>
+                            </Typography>
+                        </Box>
 
-                    {/* On error */}
-                    {dragZoneError && <Alert variant="filled" severity="error" sx={{
-                        zIndex: 50,
-                    }}>
-                        {dragZoneError}
-                    </Alert>}
+                        {/* On error */}
+                        {dragZoneError && <Alert variant="filled" severity="error" sx={{
+                            zIndex: 50,
+                        }}>
+                            {dragZoneError}
+                        </Alert>}
 
-                    {/* On not enough storage storage */}
-                    {availableStorage.data && !availableStorage.data.hasFreeSpace && <Alert variant="filled" severity="warning" sx={{
-                        zIndex: 50,
-                    }}>
-                        Currently there isn&apos;t any available storage for new buckets. Check back later.
-                    </Alert>}
+                        {/* On not enough storage storage */}
+                        {availableStorage.data && !availableStorage.data.hasFreeSpace && <Alert variant="filled" severity="warning" sx={{
+                            zIndex: 50,
+                        }}>
+                            Currently there isn&apos;t any available storage for new buckets. Check back later.
+                        </Alert>}
 
-                    {/* On available storage information not available */}
-                    {availableStorage.isError && <Alert variant="filled" severity="warning" sx={{
-                        zIndex: 50,
-                    }}>
-                        Error contacting the server. Check back later.
-                    </Alert>}
+                        {/* On available storage information not available */}
+                        {availableStorage.isError && <Alert variant="filled" severity="warning" sx={{
+                            zIndex: 50,
+                        }}>
+                            Error contacting the server. Check back later.
+                        </Alert>}
 
-                    <Box sx={{
-                        zIndex: 50,
+                        <Box sx={{
+                            zIndex: 50,
 
-                        display: "flex",
-                        height: "50%",
-                        alignItems: "center",
-                        justifyContent: "center"
-                    }}>
+                            display: "flex",
+                            height: "50%",
+                            alignItems: "center",
+                            justifyContent: "center"
+                        }}>
 
-                        <div  {...getRootProps({
-                            style: {
-                                ...dropZoneStyle,
-                                flexDirection: "column"
-                            }
-                        })}>
-                            <Box sx={{
-                                fontSize: {
-                                    md: isDragAccept ? "1.6rem" : "1.2rem"
+                            <div  {...getRootProps({
+                                style: {
+                                    ...dropZoneStyle,
+                                    flexDirection: "column"
                                 }
-                            }} textAlign={"center"}>
-                                {dragZoneText}
-                            </Box>
-                            <HoneyPotIcon height={100} width={100} />
+                            })}>
+                                <Box sx={{
+                                    fontSize: {
+                                        md: isDragAccept ? "1.6rem" : "1.2rem"
+                                    }
+                                }} textAlign={"center"}>
+                                    {dragZoneText}
+                                </Box>
+                                <HoneyPotIcon height={100} width={100} />
 
-                        </div>
-                    </Box>
-                    <Box sx={{
-                        zIndex: 50,
-                    }}>
-                        * Max container size 50mb
-                    </Box>
-                </Stack>
+                            </div>
+                        </Box>
+                        <Box sx={{
+                            zIndex: 50,
+                        }}>
+                            * Max container size 50mb
+                        </Box>
+                    </Stack>
 
 
-            </Container>
-        </div>
+                </Container>
+            </div>
+        </Element>
     )
 }

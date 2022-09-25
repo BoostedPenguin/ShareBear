@@ -13,6 +13,9 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import Ss from '../../public/shareBearLogo.svg';
+import { scroller } from 'react-scroll'
+
+
 
 import Image from 'next/image'
 
@@ -30,8 +33,11 @@ const NavigationBar = () => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
+  const handleCloseNavMenu = (to: string) => {
+    scroller.scrollTo(to, {
+      duration: 1000,
+      smooth: true,
+    })
   };
 
   const handleCloseUserMenu = () => {
@@ -39,7 +45,8 @@ const NavigationBar = () => {
   };
 
   return (
-    <AppBar elevation={5} position="static">
+    // maybe sticky?
+    <AppBar elevation={0} position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/* <img src="/shareBearLogo.svg" style={{
@@ -84,7 +91,7 @@ const NavigationBar = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page} onClick={() => handleCloseNavMenu(page)}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
@@ -108,7 +115,7 @@ const NavigationBar = () => {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={() => handleCloseNavMenu(page)}
                 sx={{ my: 2, color: '#5D2F27', display: 'block', mx: 2, fontWeight: 700 }}
               >
                 {page}
