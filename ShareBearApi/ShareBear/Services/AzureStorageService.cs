@@ -124,10 +124,17 @@ namespace ShareBear.Services
 
                         foreach (BlobContainerItem containerItem in containerPage.Values)
                         {
+                            // Delete only environment specific containers
+                            var filterString = env.IsProduction() ? "-prod" : "-dev";
+
+                            if (!containerItem.Name.Contains(filterString))
+                                continue;
+
                             var containerLastModified = containerItem.Properties.LastModified;
 
                             // Grace period of 5 days
                             // In case last activity on the container is older than 5 days before today, delete it
+
                             if(containerLastModified.AddDays(5) < DateTime.UtcNow)
                             {
                                 oldContainersNames.Add(containerItem.Name);
