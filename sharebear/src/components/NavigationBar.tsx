@@ -50,12 +50,11 @@ const NavigationBar = () => {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/* <img src="/shareBearLogo.svg" style={{
-            
           }} /> */}
           <Box sx={{
             display: { xs: 'none', md: 'flex' },
           }}>
-            <Image src="/shareBearLogo.svg" alt='Logo' height={"64"} width={"100%"} />
+            <Image src="/shareBearLogo.svg" alt='Logo' height={"64"} width={"120"} />
           </Box>
 
           {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
@@ -107,8 +106,7 @@ const NavigationBar = () => {
             color: 'inherit',
             textDecoration: 'none',
           }}>
-            <Image src="/shareBearLogo.svg" alt='Logo' height={"64"} width={"100%"} />
-
+            <Image src="/shareBearLogo.svg" alt='Logo' height={"64"} width={"120"} />
           </Box>
 
           <Box sx={{ flexGrow: 1, justifyContent: "flex-end", display: { xs: 'none', md: 'flex' } }}>

@@ -5,6 +5,7 @@ import Container from '@mui/material/Container';
 import styles from '../../../styles/LandingPage.module.css'
 import HoneyPotIcon from '../icons/HoneyPotIcon'
 import Typography from '@mui/material/Typography';
+import { scroller } from 'react-scroll'
 
 const LandingPage = () => {
   return (
@@ -48,12 +49,22 @@ const LandingPage = () => {
               </Box>
 
             </Typography>
-            <Button size="large" endIcon={<HoneyPotIcon />} color='secondary' variant="contained">Create a bucket</Button>
-            <Button size="medium" color='secondary' variant="contained">Join a bucket</Button>
+            <Button size="large" endIcon={<HoneyPotIcon />} onClick={() => {
+              scroller.scrollTo("Create", {
+                duration: 1000,
+                smooth: true,
+              })
+            }} color='secondary' variant="contained">Create a bucket</Button>
+            <Button size="medium" color='secondary' onClick={() => {
+              scroller.scrollTo("Join", {
+                duration: 1000,
+                smooth: true,
+              })
+            }} variant="contained">Join a bucket</Button>
           </Stack>
         </Box>
       </Container>
-    </div>
+    </div >
   )
 }
 
