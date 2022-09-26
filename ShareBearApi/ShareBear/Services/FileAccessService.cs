@@ -20,8 +20,8 @@ namespace ShareBear.Services
     public interface IFileAccessService
     {
         Task<ContainerHubsDto> GenerateContainer(string visitorId, List<IFormFile> files);
-        Task<ContainerHubsDto> GetContainerFiles(string visitorId, string shortRequestCode);
         Task<GetStorageStatisticsResponse> GetStorageStatistics();
+        Task<ContainerHubsDto> GetContainerFiles(string visitorId, string requestCode, bool isShort);
     }
 
     public class FileAccessService : IFileAccessService
@@ -110,16 +110,27 @@ namespace ShareBear.Services
         }
 
 
-        public async Task<ContainerHubsDto> GetContainerFiles(string visitorId, string shortRequestCode)
+        public async Task<ContainerHubsDto> GetContainerFiles(string visitorId, string requestCode, bool isShort)
         {
             using var db = contextFactory.CreateDbContext();
 
-            var container = 
+            if(isShort)
+            {
+                var shortCodeContainer =
+                    await db.ContainerHubs
+                    .Include(e => e.ContainerFiles)
+                    .FirstOrDefaultAsync(e => e.ShortCodeString == requestCode);
+
+                return await GetContainerFiles(visitorId, shortCodeContainer, db);
+            }
+
+
+            var longCodeContainer =
                 await db.ContainerHubs
                 .Include(e => e.ContainerFiles)
-                .FirstOrDefaultAsync(e => e.ShortCodeString == shortRequestCode);
+                .FirstOrDefaultAsync(e => e.FullCodeString == requestCode);
 
-            return await GetContainerFiles(visitorId, container, db);
+            return await GetContainerFiles(visitorId, longCodeContainer, db);
         }
         
         private async Task<ContainerHubsDto> GetContainerFiles(string visitorId, ContainerHubs? container, DefaultContext db)

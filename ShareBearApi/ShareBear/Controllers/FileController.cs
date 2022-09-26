@@ -34,18 +34,28 @@ namespace ShareBear.Controllers
             }
         }
 
-        [TypeFilter(typeof(VisitorAuthorizeFilter))]
         [HttpGet("container")]
-        public async Task<IActionResult> GetContainerFilesShort([FromQuery] string shortRequestCode)
+        public async Task<IActionResult> GetContainerFilesShort([FromQuery] string? shortRequestCode, [FromQuery] string? longRequestCode)
         {
             try
             {
+                var visitorId = "";
 
-                var visitorId = HttpContext.GetVisitorId();
+                if ((shortRequestCode is null && longRequestCode is null) || 
+                    (shortRequestCode is not null && longRequestCode is not null))
+                    return BadRequest(new { Message = "You need to provide either a short code or long code." });
 
-                var container = await fileAccessService.GetContainerFiles(visitorId, shortRequestCode);
+                if (shortRequestCode is not null)
+                {
+                    return Ok(await fileAccessService.GetContainerFiles(visitorId, shortRequestCode, true));
+                }
 
-                return Ok(container);
+                if(longRequestCode is not null)
+                {
+                    return Ok(await fileAccessService.GetContainerFiles(visitorId, longRequestCode, true));
+                }
+
+                return BadRequest(new { Message = "Invalid request" });
             }
             catch (Exception ex)
             {
