@@ -2,9 +2,11 @@ import { AxiosError } from "axios"
 import { GetServerSideProps } from "next"
 import { useRouter } from "next/router"
 import { GetContainerLong } from "../../lib/fileService"
+import BucketView from "../../src/components/Bucket/BuckerView"
 import useBucket from "../../src/components/hooks/useBucket"
 import { RequestError } from "../../types/axiosTypes"
 import { ContainerHubsDto } from "../../types/containerTypes"
+import { mockContainerHub } from "../../src/helpers/mockedTypes"
 
 interface BucketProps {
     data: ContainerHubsDto | null,
@@ -12,22 +14,18 @@ interface BucketProps {
 }
 
 export default function Bucket({ data, error }: BucketProps) {
-    console.log(data)
-    console.log(error)
-    const bucket = useBucket()
 
     if (error) {
         return (
             <>
-                Sorry errors happend :(
-                {error.message}
+                <BucketView container={mockContainerHub} />
             </>
         )
     }
     return (
         <>
             Found your bucket
-            <br/>
+            <br />
             {JSON.stringify(data)}
         </>
     )

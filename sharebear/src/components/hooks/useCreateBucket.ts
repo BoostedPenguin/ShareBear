@@ -4,6 +4,7 @@ import { AxiosError } from "axios"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { FileRejection, FileWithPath, useDropzone } from "react-dropzone"
 import { CreateContainer, GetServiceFreeSpace } from "../../../lib/fileService"
+import { formatBytes } from "../../helpers/sizeCalculator"
 import CreateBucket from "../Home/CreateBucket"
 
 export default function useCreateBucket() {
@@ -100,17 +101,7 @@ export default function useCreateBucket() {
         rejectStyle
     ]);
 
-    function formatBytes(bytes: number, decimals = 2) {
-        if (!+bytes) return '0 Bytes'
 
-        const k = 1024
-        const dm = decimals < 0 ? 0 : decimals
-        const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
-
-        const i = Math.floor(Math.log(bytes) / Math.log(k))
-
-        return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
-    }
 
 
 
