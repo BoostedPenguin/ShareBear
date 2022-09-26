@@ -34,10 +34,11 @@ export default function useCreateBucket() {
             return
         }
 
-        await CreateContainer(acceptedFiles, visitorRequest.visitorId).catch(ex => {
+        const data = await CreateContainer(acceptedFiles, visitorRequest.visitorId).catch(ex => {
             setDragZoneError(ex.response?.data?.message || ex.message)
             return
         })
+        console.log(data)
     }, [getData])
 
     const {

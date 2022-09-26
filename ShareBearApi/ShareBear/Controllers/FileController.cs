@@ -52,14 +52,17 @@ namespace ShareBear.Controllers
 
                 if(longRequestCode is not null)
                 {
-                    return Ok(await fileAccessService.GetContainerFiles(visitorId, longRequestCode, true));
+                    return Ok(await fileAccessService.GetContainerFiles(visitorId, longRequestCode, false));
                 }
 
                 return BadRequest(new { Message = "Invalid request" });
             }
+            catch(DirectoryNotFoundException ex)
+            {
+                return StatusCode(404, new { Message = ex.Message });
+            }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
                 return BadRequest(new {Message = ex.Message});
             }
         }
