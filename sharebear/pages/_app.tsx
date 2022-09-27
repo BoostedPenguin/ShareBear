@@ -23,6 +23,7 @@ function MyApp({ Component, pageProps }: AppProps<{ dehydratedState: unknown }>)
         }}>
 
           <Head>
+            <title>ShareBear</title>
             <meta name="viewport" content="initial-scale=1, width=device-width" />
           </Head>
 

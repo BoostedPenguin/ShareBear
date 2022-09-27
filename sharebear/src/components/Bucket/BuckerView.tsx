@@ -108,7 +108,8 @@ export default function BucketView(data: { container: ContainerHubsDto }) {
                         {/* List here */}
                         <TableContainer sx={{
                             backgroundColor: "#E2B590",
-                            width: "50vw",
+                            // width: "50vw",
+                            minWidth: "50vw",
                             zIndex: 50
                         }} component={Paper} >
                             <Table stickyHeader aria-label="sticky table">
