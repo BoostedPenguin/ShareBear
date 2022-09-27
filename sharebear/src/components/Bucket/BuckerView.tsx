@@ -136,7 +136,7 @@ export default function BucketView(data: { container: ContainerHubsDto }) {
                                 </TableHead>
                                 <TableBody>
                                     {data.container.containerFiles.map(e =>
-                                        <TableRow hover role="checkbox" tabIndex={-1} >
+                                        <TableRow key={e.fileName} hover role="checkbox" tabIndex={-1} >
                                             <TableCell>
                                                 {e.fileName}
                                             </TableCell>
