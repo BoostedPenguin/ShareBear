@@ -14,34 +14,30 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import Ss from '../../public/shareBearLogo.svg';
 import { scroller } from 'react-scroll'
-
-
-
 import Image from 'next/image'
+import { useRouter } from 'next/router';
 
 const pages = ['Create', 'Join', 'About', 'FAQ', 'Contact'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const NavigationBar = () => {
+  const router = useRouter()
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
 
   const handleCloseNavMenu = (to: string) => {
-    scroller.scrollTo(to, {
-      duration: 1000,
-      smooth: true,
-    })
-  };
+    setAnchorElNav(null);
+    if (router.pathname == "/") {
+      scroller.scrollTo(to, {
+        duration: 1000,
+        smooth: true,
+      })
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+      return
+    }
+    router.push(`/`)
   };
 
   return (
@@ -54,7 +50,12 @@ const NavigationBar = () => {
           <Box sx={{
             display: { xs: 'none', md: 'flex' },
           }}>
-            <Image src="/shareBearLogo.svg" alt='Logo' height={"64"} width={"120"} />
+            <Image src="/shareBearLogo.svg" onClick={() => {
+              if (router.pathname != "/")
+                router.push("/")
+            }} style={{
+              cursor: "pointer"
+            }} alt='Logo' height={"64"} width={"120"} />
           </Box>
 
           {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}

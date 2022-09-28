@@ -1,7 +1,6 @@
 .homeContainer {
-  margin-top: 10px;
   background: #FFEAD9;
-  height: calc(100vh - 63px);
+  height: calc(100vh - 69px);
   position: relative;
 }
 
