@@ -6,9 +6,16 @@ import HoneyPotIcon from "../icons/HoneyPotIcon";
 import HiveIcon from "../icons/HiveIcon";
 import { formatBytes } from "../../helpers/sizeCalculator";
 import { useEffect, useState } from "react";
+import ShareIcon from '@mui/icons-material/Share';
 
+interface TimeStrings {
+    days: string,
+    hours: string,
+    minutes: string,
+    seconds: string,
+}
 export default function BucketView(data: { container: ContainerHubsDto }) {
-    const [time, setTime] = useState<string>()
+    const [time, setTime] = useState<TimeStrings>()
 
     useEffect(() => {
         CountDownTimer(data.container.expiresAt, "")
@@ -41,7 +48,15 @@ export default function BucketView(data: { container: ContainerHubsDto }) {
             var minutes = Math.floor((distance % _hour) / _minute);
             var seconds = Math.floor((distance % _minute) / _second);
 
-            setTime(`${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`)
+            setTime({
+                days: days.toString().length == 1 ? "0" + days : days.toString(),
+                hours: hours.toString().length == 1 ? "0" + hours : hours.toString(),
+                minutes: minutes.toString().length == 1 ? "0" + minutes : minutes.toString(),
+                seconds: seconds.toString().length == 1 ? "0" + seconds : seconds.toString()
+            })
+
+            //setTime(`${days.toString().length == 1 ? "0" + days : days} : ${hours.toString().length == 1 ? "0" + hours : hours} : ${minutes.toString().length == 1 ? "0" + minutes : minutes} : ${seconds.toString().length == 1 ? "0" + seconds : seconds}`)
+            //setTime(`${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`)
         }
 
         timer = setInterval(showRemaining, 1000);
@@ -60,7 +75,7 @@ export default function BucketView(data: { container: ContainerHubsDto }) {
             }} maxWidth="xl">
 
                 <Box sx={{
-                    height: "100%",
+                    height: "95%",
                     display: "flex",
                     pt: 2,
                     justifyContent: { xs: "center", md: "flex-start" }
@@ -93,13 +108,22 @@ export default function BucketView(data: { container: ContainerHubsDto }) {
 
                             <Box sx={{
                                 fontSize: {
-                                    xs: "1.5rem",
+                                    xs: "1.3rem",
                                     md: "1.5rem",
                                 },
+                                display: "flex",
+                                alignItems: "center",
                             }} mt={2}>
-                                Bucket will expire in:
-                                <Box>
-                                    {time}
+                                Bucket expires in:
+                                <Box ml={1} component="span">
+                                    <input disabled className={styles.customInputBox} value={time?.days ?? "00"} />
+                                    :
+                                    <input disabled className={styles.customInputBox} value={time?.hours ?? "00"} />
+                                    :
+                                    <input disabled className={styles.customInputBox} value={time?.minutes ?? "00"} />
+                                    :
+                                    <input disabled className={styles.customInputBox} value={time?.seconds ?? "00"} />
+                                    {/* {time} */}
                                 </Box>
                             </Box>
 
@@ -152,6 +176,8 @@ export default function BucketView(data: { container: ContainerHubsDto }) {
                                 </TableBody>
                             </Table>
                         </TableContainer>
+
+                        <Button size="large" endIcon={<ShareIcon />} color='secondary' variant="contained">Share bucket</Button>
                     </Stack>
                 </Box>
             </Container>

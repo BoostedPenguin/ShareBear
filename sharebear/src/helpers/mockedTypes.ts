@@ -10,56 +10,56 @@ export const mockContainerHub: ContainerHubsDto = {
     "containerFiles": [
         {
             "containerFileName": "Project proposal - Aleksandar Todorov.pdf-.pdf-69f8bab2-6dca-4319-a546-bd7607e219a4-dev",
-            "fileName": "Project proposal - Aleksandar Todorov.pdf",
+            "fileName": "Project proposal1 - Aleksandar Todorov.pdf",
             "fileType": ".pdf",
             "fileSize": 80063,
             "signedItemUrl": "https://sharebearstorageapi.blob.core.windows.net:443/a9zh84rfb8y4l8tnhww2-5bcbcba9-0961-4139-b14d-2c436d747fb2-dev/Project%20proposal%20-%20Aleksandar%20Todorov.pdf?sv=2021-08-06&se=2022-09-29T14%3A31%3A13Z&sr=c&sp=rl&sig=UdI8ZGWb6Pnr6UHlZifU2VYaariK5vzR%2FaONvY0PsZU%3D"
         },
         {
             "containerFileName": "Project proposal - Aleksandar Todorov.pdf-.pdf-69f8bab2-6dca-4319-a546-bd7607e219a4-dev",
-            "fileName": "Project proposal - Aleksandar Todorov.pdf",
+            "fileName": "Project proposal2 - Aleksandar Todorov.pdf",
             "fileType": ".pdf",
             "fileSize": 80063,
             "signedItemUrl": "https://sharebearstorageapi.blob.core.windows.net:443/a9zh84rfb8y4l8tnhww2-5bcbcba9-0961-4139-b14d-2c436d747fb2-dev/Project%20proposal%20-%20Aleksandar%20Todorov.pdf?sv=2021-08-06&se=2022-09-29T14%3A31%3A13Z&sr=c&sp=rl&sig=UdI8ZGWb6Pnr6UHlZifU2VYaariK5vzR%2FaONvY0PsZU%3D"
         },
         {
             "containerFileName": "Project proposal - Aleksandar Todorov.pdf-.pdf-69f8bab2-6dca-4319-a546-bd7607e219a4-dev",
-            "fileName": "Project proposal - Aleksandar Todorov.pdf",
+            "fileName": "Project proposal3 - Aleksandar Todorov.pdf",
             "fileType": ".pdf",
             "fileSize": 80063,
             "signedItemUrl": "https://sharebearstorageapi.blob.core.windows.net:443/a9zh84rfb8y4l8tnhww2-5bcbcba9-0961-4139-b14d-2c436d747fb2-dev/Project%20proposal%20-%20Aleksandar%20Todorov.pdf?sv=2021-08-06&se=2022-09-29T14%3A31%3A13Z&sr=c&sp=rl&sig=UdI8ZGWb6Pnr6UHlZifU2VYaariK5vzR%2FaONvY0PsZU%3D"
         },
         {
             "containerFileName": "Project proposal - Aleksandar Todorov.pdf-.pdf-69f8bab2-6dca-4319-a546-bd7607e219a4-dev",
-            "fileName": "Project proposal - Aleksandar Todorov.pdf",
+            "fileName": "Project proposal4 - Aleksandar Todorov.pdf",
             "fileType": ".pdf",
             "fileSize": 80063,
             "signedItemUrl": "https://sharebearstorageapi.blob.core.windows.net:443/a9zh84rfb8y4l8tnhww2-5bcbcba9-0961-4139-b14d-2c436d747fb2-dev/Project%20proposal%20-%20Aleksandar%20Todorov.pdf?sv=2021-08-06&se=2022-09-29T14%3A31%3A13Z&sr=c&sp=rl&sig=UdI8ZGWb6Pnr6UHlZifU2VYaariK5vzR%2FaONvY0PsZU%3D"
         },
         {
             "containerFileName": "Project proposal - Aleksandar Todorov.pdf-.pdf-69f8bab2-6dca-4319-a546-bd7607e219a4-dev",
-            "fileName": "Project proposal - Aleksandar Todorov.pdf",
+            "fileName": "Project proposal5 - Aleksandar Todorov.pdf",
             "fileType": ".pdf",
             "fileSize": 80063,
             "signedItemUrl": "https://sharebearstorageapi.blob.core.windows.net:443/a9zh84rfb8y4l8tnhww2-5bcbcba9-0961-4139-b14d-2c436d747fb2-dev/Project%20proposal%20-%20Aleksandar%20Todorov.pdf?sv=2021-08-06&se=2022-09-29T14%3A31%3A13Z&sr=c&sp=rl&sig=UdI8ZGWb6Pnr6UHlZifU2VYaariK5vzR%2FaONvY0PsZU%3D"
         },
         {
             "containerFileName": "Project proposal - Aleksandar Todorov.pdf-.pdf-69f8bab2-6dca-4319-a546-bd7607e219a4-dev",
-            "fileName": "Project proposal - Aleksandar Todorov.pdf",
+            "fileName": "Project proposal6 - Aleksandar Todorov.pdf",
             "fileType": ".pdf",
             "fileSize": 80063,
             "signedItemUrl": "https://sharebearstorageapi.blob.core.windows.net:443/a9zh84rfb8y4l8tnhww2-5bcbcba9-0961-4139-b14d-2c436d747fb2-dev/Project%20proposal%20-%20Aleksandar%20Todorov.pdf?sv=2021-08-06&se=2022-09-29T14%3A31%3A13Z&sr=c&sp=rl&sig=UdI8ZGWb6Pnr6UHlZifU2VYaariK5vzR%2FaONvY0PsZU%3D"
         },
         {
             "containerFileName": "Project proposal - Aleksandar Todorov.pdf-.pdf-69f8bab2-6dca-4319-a546-bd7607e219a4-dev",
-            "fileName": "Project proposal - Aleksandar Todorov.pdf",
+            "fileName": "Project proposal7 - Aleksandar Todorov.pdf",
             "fileType": ".pdf",
             "fileSize": 80063,
             "signedItemUrl": "https://sharebearstorageapi.blob.core.windows.net:443/a9zh84rfb8y4l8tnhww2-5bcbcba9-0961-4139-b14d-2c436d747fb2-dev/Project%20proposal%20-%20Aleksandar%20Todorov.pdf?sv=2021-08-06&se=2022-09-29T14%3A31%3A13Z&sr=c&sp=rl&sig=UdI8ZGWb6Pnr6UHlZifU2VYaariK5vzR%2FaONvY0PsZU%3D"
         },
         {
             "containerFileName": "Project proposal - Aleksandar Todorov.pdf-.pdf-69f8bab2-6dca-4319-a546-bd7607e219a4-dev",
-            "fileName": "Project proposal - Aleksandar Todorov.pdf",
+            "fileName": "Project proposal8 - Aleksandar Todorov.pdf",
             "fileType": ".pdf",
             "fileSize": 80063,
             "signedItemUrl": "https://sharebearstorageapi.blob.core.windows.net:443/a9zh84rfb8y4l8tnhww2-5bcbcba9-0961-4139-b14d-2c436d747fb2-dev/Project%20proposal%20-%20Aleksandar%20Todorov.pdf?sv=2021-08-06&se=2022-09-29T14%3A31%3A13Z&sr=c&sp=rl&sig=UdI8ZGWb6Pnr6UHlZifU2VYaariK5vzR%2FaONvY0PsZU%3D"
