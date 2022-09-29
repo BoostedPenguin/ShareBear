@@ -111,6 +111,7 @@ export default function useCreateBucket() {
 
 
     return {
+        getInputProps,
         dragZoneError,
         getRootProps,
         dropZoneStyle,

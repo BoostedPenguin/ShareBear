@@ -5,7 +5,7 @@ import styles from '../../../styles/CreateBucket.module.css'
 import Typography from '@mui/material/Typography';
 import React from 'react';
 import HoneyPotIcon from '../icons/HoneyPotIcon';
-import { Alert, Button } from '@mui/material';
+import { Alert } from '@mui/material';
 import useAvailableStorage from '../hooks/useAvailableStorage';
 import useCreateBucket from '../hooks/useCreateBucket';
 import { Element } from 'react-scroll';
@@ -15,6 +15,7 @@ export default function CreateBucket() {
     const availableStorage = useAvailableStorage()
 
     const {
+        getInputProps,
         dragZoneError,
         dragZoneText,
         dropZoneStyle,
@@ -81,9 +82,9 @@ export default function CreateBucket() {
                             Error contacting the server. Check back later.
                         </Alert>}
 
-                        <Button sx={{
+                        <Box sx={{
                             zIndex: 50,
-                            textTransform: "none",
+
                             display: "flex",
                             height: "50%",
                             alignItems: "center",
@@ -96,6 +97,7 @@ export default function CreateBucket() {
                                     flexDirection: "column"
                                 }
                             })}>
+                                <input {...getInputProps()} />
                                 <Box sx={{
                                     fontSize: {
                                         md: isDragAccept ? "1.6rem" : "1.2rem"
@@ -106,7 +108,7 @@ export default function CreateBucket() {
                                 <HoneyPotIcon height={100} width={100} />
 
                             </div>
-                        </Button>
+                        </Box>
                         <Box sx={{
                             zIndex: 50,
                         }}>
