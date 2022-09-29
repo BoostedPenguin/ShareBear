@@ -5,7 +5,7 @@ import styles from '../../../styles/CreateBucket.module.css'
 import Typography from '@mui/material/Typography';
 import React from 'react';
 import HoneyPotIcon from '../icons/HoneyPotIcon';
-import { Alert } from '@mui/material';
+import { Alert, Button } from '@mui/material';
 import useAvailableStorage from '../hooks/useAvailableStorage';
 import useCreateBucket from '../hooks/useCreateBucket';
 import { Element } from 'react-scroll';
@@ -81,9 +81,9 @@ export default function CreateBucket() {
                             Error contacting the server. Check back later.
                         </Alert>}
 
-                        <Box sx={{
+                        <Button sx={{
                             zIndex: 50,
-
+                            textTransform: "none",
                             display: "flex",
                             height: "50%",
                             alignItems: "center",
@@ -106,7 +106,7 @@ export default function CreateBucket() {
                                 <HoneyPotIcon height={100} width={100} />
 
                             </div>
-                        </Box>
+                        </Button>
                         <Box sx={{
                             zIndex: 50,
                         }}>
