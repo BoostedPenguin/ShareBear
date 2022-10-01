@@ -1,4 +1,6 @@
 .homeContainer {
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
   background: #FFEAD9;
   height: calc(100vh - 69px);
   position: relative;
@@ -90,21 +92,22 @@
 
 @keyframes slidingBearBackgroundSmall {
   from {
-    background-position: 992px bottom;
+    transform: translateX(992px);
   }
 
   to {
-    background-position: 50% bottom;
+    /* background-position: 50% bottom; */
   }
 }
 
 
 @keyframes slidingBearBackgroundBig {
   from {
-    background-position: 200% 0px;
+    transform: translateX(200%);
+    /* background-position: 200% 0px; */
   }
 
   to {
-    background-position: 100% 0px;
+    /* background-position: 100% 0px; */
   }
 }
