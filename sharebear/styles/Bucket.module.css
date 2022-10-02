@@ -46,16 +46,6 @@
   .bearWithTable {
     display: none
   }
-
-  .customInputBox {
-    font-size: 1.1em;
-  }
-
-  .lowerRightShape {
-    max-height: 60vh;
-    background-position: bottom;
-    background-size: cover;
-  }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
