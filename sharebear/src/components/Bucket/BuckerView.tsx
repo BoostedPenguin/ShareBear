@@ -72,13 +72,13 @@ export default function BucketView(data: { container: ContainerHubsDto }) {
             <div className={styles.lowerRightShape} />
             <div className={styles.upperRightShape} />
             <div className={styles.bearWithTable} />
-            <Container maxWidth={false}>
-                <Grid sx={{
+            <Container sx={{
                     backgroundColor: {
                         xs: "#F5D1B4",
                         md: "#FFEAD9"
                     }
-                }} container >
+                }} maxWidth={false}>
+                <Grid container >
                     <Grid xs={12} md={8}>
 
                         <Box sx={{
@@ -88,7 +88,7 @@ export default function BucketView(data: { container: ContainerHubsDto }) {
                             <Stack
                                 direction="column"
                                 alignItems="center"
-                                spacing={4}>
+                                spacing={2}>
                                 <Typography
                                     variant="h4"
                                     sx={{
@@ -189,7 +189,6 @@ export default function BucketView(data: { container: ContainerHubsDto }) {
                         </Box>
                     </Grid>
                     <Grid xs={12} md={4}>
-
                         <Stack spacing={2} sx={{
                             marginTop: "20%",
                             alignItems: "center",
