@@ -20,6 +20,11 @@ export async function CreateContainer(files: FileWithPath[], visitorId: string) 
         formData.append("FormFiles", files[file]);
     }
 
+    return await RequestWrapper<ContainerHubsDto, FormData>(RestMethod.POST, `/api/file/container/create`, formData, {
+        'Content-Type': 'multipart/form-data',
+        'VisitorIdHeader': visitorId
+    })
+
     return await axios.post<ContainerHubsDto>(`/api/file/container/create`, formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
@@ -39,12 +44,20 @@ export async function GetContainerLong(longRequestCode: string) {
     return await RequestWrapper<ContainerHubsDto>(RestMethod.GET, `/api/file/container?longRequestCode=${longRequestCode}`)
 }
 
-async function RequestWrapper<T>(method: RestMethod, url: string): Promise<[T | null, RequestError | null]> {
+
+
+export type AxiosRequestHeaders = Record<string, string | number | boolean>;
+
+async function RequestWrapper<T>(method: RestMethod.GET, url: string, headers?: AxiosRequestHeaders): Promise<[T | null, RequestError | null]>
+async function RequestWrapper<T, R>(method: RestMethod.POST, url: string, body: R, headers?: AxiosRequestHeaders): Promise<[T | null, RequestError | null]>
+async function RequestWrapper<T, R>(method: RestMethod, url: string, body?: R, headers?: AxiosRequestHeaders): Promise<[T | null, RequestError | null]> {
     try {
 
         const data = method == RestMethod.GET ?
             await axios.get<T>(url) :
-            await axios.post<T>(url)
+            await axios.post<T>(url, body, {
+                headers: headers
+            })
 
         return [data.data, null]
     }
