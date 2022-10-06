@@ -1,15 +1,35 @@
-import { Container, Box, Stack, Typography, Button, IconButton } from '@mui/material'
+import { Container, Box, Stack, Typography, Button, IconButton, Alert } from '@mui/material'
 import styles from '../../../styles/JoinBucket.module.css'
 import HoneyPotIcon from '../icons/HoneyPotIcon'
 import { useEffect, useRef, useState } from "react"
 import { SendRounded } from '@mui/icons-material';
 import { Element } from 'react-scroll';
+import { GetContainerShort } from '../../../lib/fileService';
+import { useRouter } from 'next/router';
 
 
 export default function JoinBucket() {
     const itemsRef = useRef<Array<HTMLInputElement | null>>([])
-    const [code, setCode] = useState<string>()
+    const [error, setError] = useState<string>()
+    const router = useRouter()
 
+    const onCodeEnter = async () => {
+
+        const code = itemsRef.current.map(e => e?.value).join("")
+        if (!code || code.length < 6) {
+            setError("Each code is 6 characters long.")
+            return
+        }
+        const [data, error] = await GetContainerShort(code)
+        if (error) {
+            setError(error.message ?? "Unknown error occurred")
+            return
+        }
+
+        setError("")
+        if (data)
+            router.push(`bucket/${data.fullCodeString}`)
+    }
 
     return (
         <Element name='Join'>
@@ -51,6 +71,13 @@ export default function JoinBucket() {
                                 </Box>
 
                             </Typography>
+
+                            {/* On error */}
+                            {error && <Alert variant="filled" severity="error" sx={{
+                                zIndex: 50,
+                            }}>
+                                {error}
+                            </Alert>}
 
                             <Typography
                                 variant="h5"
@@ -109,7 +136,7 @@ export default function JoinBucket() {
                                 }} sx={{
                                     marginLeft: 2,
                                     color: "#44254A",
-                                }}>
+                                }} onClick={onCodeEnter}>
                                     <SendRounded />
                                 </IconButton>
                             </Box>
