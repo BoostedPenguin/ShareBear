@@ -7,6 +7,7 @@ import useBucket from "../../src/components/hooks/useBucket"
 import { RequestError } from "../../types/axiosTypes"
 import { ContainerHubsDto } from "../../types/containerTypes"
 import { mockContainerHub } from "../../src/helpers/mockedTypes"
+import { Container, Typography } from "@mui/material"
 
 interface BucketProps {
     data: ContainerHubsDto | null,
@@ -17,16 +18,30 @@ export default function Bucket({ data, error }: BucketProps) {
 
     if (error) {
         return (
-            <>
-                <BucketView container={mockContainerHub} />
-            </>
+            <Container sx={{
+                display: "flex",
+                height: "500px",
+                alignItems: "center",
+                justifyContent: "center"
+            }}>
+                <Typography
+                    variant="h3"
+                    sx={{
+                        fontFamily: 'Aref Ruqaa Ink',
+                        maxWidth: 500,
+                        zIndex: 1,
+                        color: "#502720",
+                        textAlign: "center",
+                    }}
+                >
+                    Bucket not found.
+                </Typography>
+            </Container>
         )
     }
     return (
         <>
-            Found your bucket
-            <br />
-            {JSON.stringify(data)}
+            <BucketView container={data!} />
         </>
     )
 }

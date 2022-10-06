@@ -24,13 +24,6 @@ export async function CreateContainer(files: FileWithPath[], visitorId: string) 
         'Content-Type': 'multipart/form-data',
         'VisitorIdHeader': visitorId
     })
-
-    return await axios.post<ContainerHubsDto>(`/api/file/container/create`, formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-            'VisitorIdHeader': visitorId
-        }
-    })
 }
 
 export async function GetContainerShort(shortRequestCode: string) {

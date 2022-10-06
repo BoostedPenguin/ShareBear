@@ -6,12 +6,14 @@ import { FileRejection, FileWithPath, useDropzone } from "react-dropzone"
 import { CreateContainer, GetServiceFreeSpace } from "../../../lib/fileService"
 import { formatBytes } from "../../helpers/sizeCalculator"
 import CreateBucket from "../Home/CreateBucket"
+import { useRouter } from 'next/router'
 
 export default function useCreateBucket() {
     const maxFileSize: number = 50000000
     const [dragZoneText, setDragZoneText] = useState<string>()
     const [dragZoneError, setDragZoneError] = useState<string | undefined>()
     const { getData } = useVisitorData()
+    const router = useRouter()
 
 
     const onDrop = useCallback(async (acceptedFiles: FileWithPath[], rejectedFiles: FileRejection[]) => {
@@ -35,11 +37,16 @@ export default function useCreateBucket() {
             return
         }
 
-        const data = await CreateContainer(acceptedFiles, visitorRequest.visitorId).catch(ex => {
-            setDragZoneError(ex.response?.data?.message || ex.message)
+        const [data, error] = await CreateContainer(acceptedFiles, visitorRequest.visitorId)
+
+        if (error) {
+            setDragZoneError(error.message ?? "Unknown exception occurred.")
             return
-        })
-        console.log(data)
+        }
+
+        if (data)
+            router.push(`bucket/${data.fullCodeString}`)
+            
     }, [getData])
 
     const {
