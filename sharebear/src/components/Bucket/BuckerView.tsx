@@ -1,6 +1,6 @@
 import { ContainerHubsDto } from "../../../types/containerTypes";
 import styles from '../../../styles/Bucket.module.css'
-import { Container, Box, Stack, Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
+import { Container, Box, Stack, Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton } from "@mui/material";
 import { scroller } from "react-scroll";
 import HoneyPotIcon from "../icons/HoneyPotIcon";
 import HiveIcon from "../icons/HiveIcon";
@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import ShareIcon from '@mui/icons-material/Share';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useRouter } from "next/router";
-
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 interface TimeStrings {
     days: string,
     hours: string,
@@ -163,6 +163,10 @@ export default function BucketView(data: { container: ContainerHubsDto }) {
                                                 >
                                                     Size
                                                 </TableCell>
+                                                <TableCell align="right"
+                                                >
+                                                    Download
+                                                </TableCell>
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
@@ -176,6 +180,13 @@ export default function BucketView(data: { container: ContainerHubsDto }) {
                                                     </TableCell>
                                                     <TableCell align="right">
                                                         {formatBytes(e.fileSize)}
+                                                    </TableCell>
+                                                    <TableCell align="right">
+                                                    <IconButton sx={{
+                                                        backgroundColor: "#CD9A71"
+                                                    }} download={e.fileName} href={e.signedItemUrl}>
+                                                            <CloudDownloadIcon />
+                                                        </IconButton>
                                                     </TableCell>
                                                 </TableRow>
                                             )}
