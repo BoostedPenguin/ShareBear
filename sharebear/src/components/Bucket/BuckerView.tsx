@@ -1,6 +1,6 @@
 import { ContainerHubsDto } from "../../../types/containerTypes";
 import styles from '../../../styles/Bucket.module.css'
-import { Container, Box, Stack, Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton } from "@mui/material";
+import { Container, Box, Stack, Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Modal, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Snackbar, Alert } from "@mui/material";
 import { scroller } from "react-scroll";
 import HoneyPotIcon from "../icons/HoneyPotIcon";
 import HiveIcon from "../icons/HiveIcon";
@@ -18,11 +18,20 @@ interface TimeStrings {
 }
 export default function BucketView(data: { container: ContainerHubsDto }) {
     const [time, setTime] = useState<TimeStrings>()
+    const [shareModal, setShareModal] = useState<boolean>(false)
+    const [shareSnackbar, setShareSnackbar] = useState<boolean>(false)
+    const [copyLink, setCopyLink] = useState<string>()
     const router = useRouter()
 
     useEffect(() => {
         CountDownTimer(data.container.expiresAt, "")
     }, [data.container.expiresAt])
+
+    useEffect(() => {
+        if (!window?.location?.href) return
+
+        setCopyLink(window.location.href)
+    }, [])
 
     // CountDownTimer('02/19/2012 10:1 AM', 'countdown');
     // CountDownTimer('02/20/2012 10:1 AM', 'newcountdown');
@@ -182,9 +191,9 @@ export default function BucketView(data: { container: ContainerHubsDto }) {
                                                         {formatBytes(e.fileSize)}
                                                     </TableCell>
                                                     <TableCell align="right">
-                                                    <IconButton sx={{
-                                                        backgroundColor: "#CD9A71"
-                                                    }} download={e.fileName} href={e.signedItemUrl}>
+                                                        <IconButton sx={{
+                                                            backgroundColor: "#CD9A71"
+                                                        }} download={e.fileName} href={e.signedItemUrl}>
                                                             <CloudDownloadIcon />
                                                         </IconButton>
                                                     </TableCell>
@@ -195,7 +204,7 @@ export default function BucketView(data: { container: ContainerHubsDto }) {
                                     </Table>
                                 </TableContainer>
 
-                                <Button size="large" endIcon={<ShareIcon />} color='secondary' variant="contained">Share bucket</Button>
+                                <Button size="large" onClick={() => setShareModal(true)} endIcon={<ShareIcon />} color='secondary' variant="contained">Share bucket</Button>
                             </Stack>
                         </Box>
                     </Grid>
@@ -224,6 +233,70 @@ export default function BucketView(data: { container: ContainerHubsDto }) {
                     </Grid>
                 </Grid>
             </Container>
+
+            {/* Share bucket modal */}
+            <Dialog
+                open={shareModal}
+                onClose={() => setShareModal(false)}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    Share bucket
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Do you want to share this bucket with another person? Simply give them the following link and they will have access!
+                    </DialogContentText>
+                    <Grid container spacing={2} alignItems={"center"}>
+                        <Grid xs={10}>
+                            <TextField
+                                autoFocus
+                                disabled
+                                sx={{
+                                    "& .MuiInputBase-input.Mui-disabled": {
+                                        WebkitTextFillColor: "#000000",
+                                    },
+                                }}
+                                margin="dense"
+                                type="email"
+                                fullWidth
+                                variant="standard"
+                                value={copyLink}
+                            />
+                        </Grid>
+                        <Grid xs={2}>
+                            <Button variant="outlined" color="secondary" onClick={() => {
+                                navigator.clipboard.writeText(copyLink ?? "")
+                                setShareSnackbar(true)
+                            }} autoFocus>
+                                COPY
+                            </Button>
+                        </Grid>
+
+
+                        <Grid xs={12}>
+                            Or you can just use this code on our homepage: {data.container.shortCodeString}
+                        </Grid>
+                    </Grid>
+                </DialogContent>
+                <DialogActions>
+                    <Button variant="contained" onClick={() => setShareModal(false)} autoFocus>
+                        Close
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            <Snackbar
+                open={shareSnackbar}
+                autoHideDuration={3000}
+                onClose={() => setShareSnackbar(false)}
+                message="Share link copied!"
+            >
+                <Alert severity="success" sx={{ width: '100%' }}>
+                    This is a success message!
+                </Alert>
+            </Snackbar>
 
         </div>
     )
