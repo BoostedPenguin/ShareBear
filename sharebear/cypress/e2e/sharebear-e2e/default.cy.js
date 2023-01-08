@@ -11,5 +11,18 @@ describe('open page', () => {
       // which are the two default items.
       cy.contains('ShareBear file transfer')
     })
+
+    it('Validates elements on landing page', () => {
+      cy.contains('* Max container size 50mb')
+    })
+
+    it('Validates elements on join bucket', () => {
+      cy.contains('Enter your code here:')
+    })
+
+    it('Validates bucket screen', () => {
+      cy.visit('http://localhost:3000/bucket/123')
+      cy.contains('Bucket not found.')
+    })
   })
   
